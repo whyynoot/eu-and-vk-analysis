@@ -1,4 +1,9 @@
 {"bmstu": {
   "username": "",
   "password": ""
-}}
+},
+  "vk": {
+    "access_token": "",
+    "groups": []
+  }
+}
