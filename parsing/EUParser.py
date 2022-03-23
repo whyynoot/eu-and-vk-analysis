@@ -85,7 +85,50 @@ class EUParser:
         if not self.logged_in:
             self.login()
         print("Start parsing...")
-        # TODO: Add parsing
+
+    def parse(self):
+        try:
+            response = self.session.get('https://eu.bmstu.ru/modules/session/', proxies=self.proxy)
+        except Exception as e:
+            raise Exception("Unable to parse groups", e)
+
+        if response.status_code == 200:
+            html = BeautifulSoup(response.text, features='lxml')
+
+            groups = html.find_all("a", {'name': 'sdlk'})
+
+            print(f"Total groups found {len(groups)}")
+
+            for group in groups:
+                self.parse_students(group['href'])
+        else:
+            raise Exception("Session's status code error")
+
+    def parse_students(self, group_link):
+        try:
+            response = self.session.get(f'https://eu.bmstu.ru/{group_link}', proxies=self.proxy)
+            response.encoding = 'utf-8'
+            if response.status_code == 200:
+                html = BeautifulSoup(response.text, features='lxml')
+                table = iter(html.find('table').find_all('tr'))
+                next(table)
+                for row in table:
+                    student_uuid = row['student-uuid']
+                    student_name = row.div.span.text
+                    student_group = row.div.find_next('span').find_next('span').text
+                    student_marks = row.find_all('td')
+                    marks = []
+                    # 3 for skipping list number, name, number of document id
+                    for mark in student_marks[3:]:
+                        marks.append(mark.span.text)
+                    print(student_uuid, student_name, student_group, marks)
+                    # TODO: Create and add to db (suggested to as a group)
+
+            else:
+                raise Exception("Unable to parse students from group")
+
+        except Exception as e:
+            raise Exception("Unable to parse students:", e)
 
 if __name__ == "__main__":
     parser = EUParser()
