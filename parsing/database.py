@@ -125,18 +125,3 @@ class GroupsStudents(Base):
     vkgroups = relationship("VKGroup", back_populates="students")
     students = relationship("Student", back_populates="vkgroups")
 
-if __name__ == "__main__":
-    db = DataBase()
-    Base.metadata.create_all(db.engine)
-    print("Python classes moved to mysql Entities")
-
-    # Tests, only executed from if __main__
-    from sqlalchemy.orm import Session
-    session = Session(bind=db.engine)
-    session.add(Student(name='Вася Пупукин', student_group='СГН3-31Б'))
-    session.add(VKGroup(id=1, name='Первая вк группа', link='ссылка на группу'))
-    session.add(GroupsStudents(group_id=1, student_id=1))
-    session.add(Marks(student_id=1, exam_1=5))
-    session.commit()
-
-

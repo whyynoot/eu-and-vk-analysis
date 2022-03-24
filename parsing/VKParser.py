@@ -96,10 +96,5 @@ class VKParser:
         return suggested_student
 
     def parse(self):
-        #self.get_bmstu_groups_members()
+        self.get_bmstu_groups_members()
         self.get_students_groups()
-
-
-if __name__ == "__main__":
-    parser = VKParser()
-    parser.get_bmstu_groups_members()
