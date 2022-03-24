@@ -59,6 +59,7 @@ class Student(Base):
 
     # Relations
     marks = relationship("Marks", back_populates="student")
+    groups = relationship("GroupsStudents", back_populates="students")
 
     def __repr__(self):
         return f'{self.name} | {self.student_group} | {self.vk_link}'
@@ -110,7 +111,7 @@ class VKGroup(Base):
     link = Column(Text, nullable=False)
 
     # Relations
-
+    students = relationship("GroupsStudents", back_populates="vkgroups")
 
 class GroupsStudents(Base):
     # Configuration
@@ -119,12 +120,14 @@ class GroupsStudents(Base):
     group_id = Column(ForeignKey("vkgroups.id"), primary_key=True)
     student_id = Column(ForeignKey("students.id"), primary_key=True)
 
+    group = relationship("VKGroup", back_populates="vkgroups")
     student = relationship("Student", back_populates="students")
-    group = relationship("VKGroup", back_populates="groups")
+    #group = relationship("VKGroup", back_populates="vkgroups")
 
 
 
 if __name__ == "__main__":
     db = DataBase()
     Base.metadata.create_all(db.engine)
+    print("Python classes moved to mysql Entities")
 
