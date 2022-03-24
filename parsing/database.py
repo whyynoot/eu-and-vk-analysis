@@ -104,7 +104,7 @@ class VKGroup(Base):
     __tablename__ = 'vkgroups'
 
     # Attributes
-    id = Column(Integer,
+    id = Column(Text,
                       nullable=False,
                       unique=True,
                       primary_key=True)
@@ -125,7 +125,6 @@ class GroupsStudents(Base):
 
     vkgroups = relationship("VKGroup", back_populates="students")
     students = relationship("Student", back_populates="vkgroups")
-
 
 if __name__ == "__main__":
     db = DataBase()
