@@ -104,13 +104,12 @@ class VKGroup(Base):
     __tablename__ = 'vkgroups'
 
     # Attributes
-    id = Column(Text,
+    id = Column(Integer,
                       nullable=False,
                       unique=True,
                       primary_key=True)
     name = Column(Text, nullable=False)
     category = Column(Text, nullable=True)
-    link = Column(Text, nullable=False)
 
     # Relations
     students = relationship("GroupsStudents", back_populates="vkgroups")
