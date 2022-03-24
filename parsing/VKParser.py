@@ -1,7 +1,7 @@
 import vk
+from vk import exceptions
 import json
 from database import Student, VKGroup, GroupsStudents
-
 
 class VKParser:
     CONFIG_LINK = 'config.json'
@@ -61,18 +61,30 @@ class VKParser:
         counter = 0
         response = dict(count=0)
         while counter <= int(response['count']):
-            response = self.api.users.getSubscriptions(user_id=student.id, offset=counter, count=200, fields='activity')
+            try:
+                response = self.api.users.getSubscriptions(user_id=student.vk_link, offset=counter, count=200, fields='activity', extended=False)
+            except exceptions.VkAPIError as e:
+                # Profile is private
+                if str(e)[:2] == '30':
+                    break
+                else:
+                    raise Exception("Unable to parse student groups", e)
+
             for group in response['items']:
-                self.save_group(group['id'], group['name'], group['activity'])
-                self.save_group_student_linking(student.id, group['id'])
-            self.session.commit()
+                try:
+                    self.save_group(group['id'], group['name'], group['activity'])
+                    self.save_group_student_linking(student.id, group['id'])
+                except:
+                    # Subs for users starts
+                    pass
+            self.db_session.commit()
             counter += 200
 
     def save_group_student_linking(self, student_id, group_id):
-        self.session.add(GroupsStudents(student_id=student_id, group_id=group_id))
+        self.db_session.merge(GroupsStudents(student_id=student_id, group_id=group_id))
 
     def save_group(self, id, name, category):
-        self.session.add(VKGroup(id=id, name=name, category=category))
+        self.db_session.merge(VKGroup(id=id, name=name, category=category))
 
     def update_student_vk_link(self, student, link):
         self.db_session.query(Student).filter(Student.name == student.name).\
@@ -84,7 +96,7 @@ class VKParser:
         return suggested_student
 
     def parse(self):
-        self.get_bmstu_groups_members()
+        #self.get_bmstu_groups_members()
         self.get_students_groups()
 
 

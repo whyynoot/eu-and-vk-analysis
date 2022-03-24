@@ -18,14 +18,14 @@ class DataBase:
 
         self.get_config_data()
 
-        self.engine = sqlalchemy.create_engine(f'mysql+pymysql://{self.user}:{self.password}@{self.server}/{self.DATABASE_NAME}')
+        self.engine = sqlalchemy.create_engine(f'mysql+pymysql://{self.user}:{self.password}@{self.server}/{self.DATABASE_NAME}?charset=utf8mb4')
 
         self.init_db()
         self.session = Session(bind=self.engine)
 
     def init_db(self):
         if not sqlalchemy_utils.database_exists(self.engine.url):
-            sqlalchemy_utils.create_database(self.engine.url)
+            sqlalchemy_utils.create_database(self.engine.url, encoding='utf8mb4')
             print(f"New Database Created at/with {self.engine}")
         else:
             print("Database was not created as it exists")
