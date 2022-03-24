@@ -59,7 +59,7 @@ class Student(Base):
 
     # Relations
     marks = relationship("Marks", back_populates="student")
-    groups = relationship("GroupsStudents", back_populates="students")
+    vkgroups = relationship("GroupsStudents", back_populates="students")
 
     def __repr__(self):
         return f'{self.name} | {self.student_group} | {self.vk_link}'
@@ -113,6 +113,7 @@ class VKGroup(Base):
     # Relations
     students = relationship("GroupsStudents", back_populates="vkgroups")
 
+
 class GroupsStudents(Base):
     # Configuration
     __tablename__ = 'GroupsStudents'
@@ -120,14 +121,22 @@ class GroupsStudents(Base):
     group_id = Column(ForeignKey("vkgroups.id"), primary_key=True)
     student_id = Column(ForeignKey("students.id"), primary_key=True)
 
-    group = relationship("VKGroup", back_populates="vkgroups")
-    student = relationship("Student", back_populates="students")
-    #group = relationship("VKGroup", back_populates="vkgroups")
-
+    vkgroups = relationship("VKGroup", back_populates="students")
+    students = relationship("Student", back_populates="vkgroups")
 
 
 if __name__ == "__main__":
     db = DataBase()
     Base.metadata.create_all(db.engine)
     print("Python classes moved to mysql Entities")
+
+    # Tests, only executed from if __main__
+    from sqlalchemy.orm import Session
+    session = Session(bind=db.engine)
+    #session.add(Student(name='Вася Пупукин', student_group='СГН3-31Б'))
+    session.add(VKGroup(id=1, name='Первая вк группа', link='ссылка на группу'))
+    session.add(GroupsStudents(group_id=1, student_id=1))
+    session.add(Marks(student_id=1, exam_1=5))
+    session.commit()
+
 
