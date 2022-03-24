@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy_utils
 import json
+from sqlalchemy.orm import Session
 
 
 class DataBase:
@@ -20,6 +21,7 @@ class DataBase:
         self.engine = sqlalchemy.create_engine(f'mysql+pymysql://{self.user}:{self.password}@{self.server}/{self.DATABASE_NAME}')
 
         self.init_db()
+        self.session = Session(bind=self.engine)
 
     def init_db(self):
         if not sqlalchemy_utils.database_exists(self.engine.url):
@@ -133,7 +135,7 @@ if __name__ == "__main__":
     # Tests, only executed from if __main__
     from sqlalchemy.orm import Session
     session = Session(bind=db.engine)
-    #session.add(Student(name='Вася Пупукин', student_group='СГН3-31Б'))
+    session.add(Student(name='Вася Пупукин', student_group='СГН3-31Б'))
     session.add(VKGroup(id=1, name='Первая вк группа', link='ссылка на группу'))
     session.add(GroupsStudents(group_id=1, student_id=1))
     session.add(Marks(student_id=1, exam_1=5))
