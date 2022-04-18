@@ -1,0 +1,178 @@
+body {
+    background: #F1FFF1; 
+    font-family: 'Inter', 'Trebuchet MS',  sans-serif;
+margin-top: 110px;
+}
+p{
+    margin-left:20px;
+    width: 55%;
+}
+.header{
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  left: 0px;
+  top: 0px;
+
+  background: #D4F2D3;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    
+    z-index: 1;
+}
+
+img[alt="logo"]{
+      height: 80px;
+  width: 70px;
+  position: absolute;
+  left: 20px;
+  top: 7px;
+}
+
+.header h1{
+  position: absolute;
+     left: 90px;
+    right:75px;
+ 
+height: 78px;
+    vertical-align: center;
+
+
+top: 0px;
+
+font-style: normal;
+    font-size: 110%;
+font-weight: 700;
+line-height: 20
+    px;
+text-align: center;
+
+color: #000000;
+}
+.header h2{
+  position: absolute;
+     left: 80px;
+    right:75px;
+ 
+height: 50px;
+
+
+top:0px;
+
+font-style: normal;
+font-weight: 700;
+line-height: 20
+    px;
+text-align: center;
+
+color: #000000;
+}
+
+
+img[alt="menu-icon"]{
+    position: fixed;
+width: 50px;
+height: 50px;
+right: 20px;
+top: 25px;
+    z-index: 1;
+}
+
+
+img[alt="back-icon"]{
+  position: absolute;
+width: 50px;
+height: 50px;
+left: 20px;
+top: 25px;
+}
+
+.menu-button{
+    position: absolute;
+width: 35%;
+height: 65px;
+left: 60%;
+max-width: 250px;
+    margin:10px;
+
+background: #5D5FEF;
+border-radius: 50px;
+
+color: #FFFFFF;
+font-weight: 700;
+    
+    
+}
+
+.choice-back, .result-back {
+width: 70%;
+   max-width: 1000px;
+
+height: 250px;
+margin-left: 10%;
+margin-top:30px;
+
+    
+background: #FCDDEC;
+border-radius: 25px;
+text-align: center;
+    padding-top: 20px;
+        font-size: 1em;
+    font-weight: 550;
+
+
+}
+
+.choice-back button{
+width: 30%;
+height: 50px;
+    margin:15px;
+    min-width: 150px;
+
+background: #A5A6F6;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+border-radius: 20px;
+    
+    color: #FFFFFF;
+font-weight: 600;
+    font-size: 1em
+}
+
+.result-back img{
+    width: 200px; 
+margin: 20px    
+}
+
+.choice-back input{
+    width: 80%;
+height: 40px;
+margin: 15px;
+
+background: #E1E1E1;
+border-radius: 30px;
+    color
+    : #FFFFFF;
+    
+}
+
+.menu{
+    background-color: #eee;
+    position: fixed;
+    width: auto;
+    padding: 30px;
+    padding-top: 0px;
+
+    right:60px;
+    top:60px;
+    z-index: 1;
+    border-radius: 25px;
+    text-align: center;
+    display: none;
+    
+}
+
+.menu-dropdown:hover .menu{
+    display: block;
+}
+
+
+
