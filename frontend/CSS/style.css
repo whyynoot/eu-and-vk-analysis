@@ -1,7 +1,23 @@
+:root {
+    /* Цвета и градиенты */
+    --color-bg: #F1FFF1;
+    --color-bg-alt: #D4F2D3;
+    --color-bg-menu:#eee;
+    --color-bg-block:#FFF3F9;
+    --color-button-choice: #A5A6F6;
+    --color-text-button: #fff;
+    --color-button-menu:#5D5FEF;
+}
+
+
 body {
-    background: #F1FFF1; 
+    background: var(--color-bg);
     font-family: 'Inter', 'Trebuchet MS',  sans-serif;
-margin-top: 110px;
+    margin-top: 110px;
+    
+}
+main{
+    max-width: 1000px;
 }
 p{
     margin-left:20px;
@@ -14,10 +30,9 @@ p{
   left: 0px;
   top: 0px;
 
-  background: #D4F2D3;
+  background: var(--color-bg-alt);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    
-    z-index: 1;
+  z-index: 1;
 }
 
 img[alt="logo"]{
@@ -46,7 +61,6 @@ line-height: 20
     px;
 text-align: center;
 
-color: #000000;
 }
 .header h2{
   position: absolute;
@@ -64,7 +78,6 @@ line-height: 20
     px;
 text-align: center;
 
-color: #000000;
 }
 
 
@@ -94,10 +107,10 @@ left: 60%;
 max-width: 250px;
     margin:10px;
 
-background: #5D5FEF;
+background: var(--color-button-menu);
 border-radius: 50px;
 
-color: #FFFFFF;
+color: var(--color-text-button);
 font-weight: 700;
     
     
@@ -112,7 +125,7 @@ margin-left: 10%;
 margin-top:30px;
 
     
-background: #FCDDEC;
+background: var(--color-bg-block);
 border-radius: 25px;
 text-align: center;
     padding-top: 20px;
@@ -128,11 +141,11 @@ height: 50px;
     margin:15px;
     min-width: 150px;
 
-background: #A5A6F6;
+background: var(--color-button-choice);
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 border-radius: 20px;
     
-    color: #FFFFFF;
+    color: var(--color-text-button);
 font-weight: 600;
     font-size: 1em
 }
@@ -155,21 +168,23 @@ border-radius: 30px;
 }
 
 .menu{
-    background-color: #eee;
+    background-color: var(--color-bg-menu);
     position: fixed;
-    width: auto;
+    width: 90%;
     padding: 30px;
     padding-top: 0px;
+    outline-color: var(--color-text-button);
 
-    right:60px;
-    top:60px;
+    top:50px;
     z-index: 1;
-    border-radius: 25px;
-    text-align: center;
+    border-radius: 5px;
     display: none;
+    text-align: center;
     
 }
-
+.menu-dropdown a:hover{
+    color: red;
+}
 .menu-dropdown:hover .menu{
     display: block;
 }
