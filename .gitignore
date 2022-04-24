@@ -1,4 +1,5 @@
 *.idea
+/parsing/config.json
 
 # Binaries for programs and plugins
 *.exe
