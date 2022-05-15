@@ -4,7 +4,7 @@ import json
 from database import Student, VKGroup, GroupsStudents
 
 class VKParser:
-    CONFIG_LINK = 'config.json'
+    CONFIG_LINK = '../config.json'
     LANG = 'ru'
     API_VERSION = '5.131'
 
