@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 
 class DataBase:
-    CONFIG_FILE = 'config.json'
+    CONFIG_FILE = '../config.json'
     DATABASE_NAME = 'euandvk'
 
     def __init__(self):

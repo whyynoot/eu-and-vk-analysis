@@ -5,7 +5,7 @@ from database import Student, Marks
 
 class EUParser:
 
-    CONFIG_LINK = 'config.json'
+    CONFIG_LINK = '../config.json'
 
     LOGIN_LINK = "https://proxy.bmstu.ru:8443/cas/login?service=https%3A%2F%2Fproxy." \
                  "bmstu.ru%3A8443%2Fcas%2Foauth2.0%2FcallbackAuthorize%3Fclient_name%3DCasOAuthClient%26client_id%3DEU"
