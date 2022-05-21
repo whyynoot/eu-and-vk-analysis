@@ -1,0 +1,78 @@
+basePath: /
+definitions:
+  client_models.Response:
+    properties:
+      statistics:
+        additionalProperties:
+          type: integer
+        type: object
+      status:
+        enum:
+        - OK
+        - ' NOT OK'
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  title: EU and VK Analytics API documentation
+  version: 1.0.0
+paths:
+  /interests/{filter}:
+    get:
+      description: Get interests by performance
+      parameters:
+      - description: Filter
+        enum:
+        - bad
+        - good
+        - excellent
+        - three
+        in: path
+        name: filter
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/client_models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/client_models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/client_models.Response'
+      summary: Get interests
+      tags:
+      - Interests
+  /studnets/{filter}:
+    get:
+      description: |-
+        Get students by filter
+        Currently only supporting vk group id
+      parameters:
+      - description: Filter
+        in: path
+        name: filter
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 'NA": 0, "three": 0, "good": 0, "excellent": 0}'
+          schema:
+            $ref: '#/definitions/client_models.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/client_models.Response'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/client_models.Response'
+      summary: Get students by filter
+      tags:
+      - Students
+swagger: "2.0"

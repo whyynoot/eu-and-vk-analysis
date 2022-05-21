@@ -1,0 +1,114 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "EU and VK Analytics API documentation",
+        "contact": {},
+        "version": "1.0.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "paths": {
+        "/interests/{filter}": {
+            "get": {
+                "description": "Get interests by performance",
+                "tags": [
+                    "Interests"
+                ],
+                "summary": "Get interests",
+                "parameters": [
+                    {
+                        "enum": [
+                            "bad",
+                            "good",
+                            "excellent",
+                            "three"
+                        ],
+                        "type": "string",
+                        "description": "Filter",
+                        "name": "filter",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/client_models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/client_models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/client_models.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/studnets/{filter}": {
+            "get": {
+                "description": "Get students by filter\nCurrently only supporting vk group id",
+                "tags": [
+                    "Students"
+                ],
+                "summary": "Get students by filter",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Filter",
+                        "name": "filter",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}",
+                        "schema": {
+                            "$ref": "#/definitions/client_models.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/client_models.Response"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/client_models.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "client_models.Response": {
+            "type": "object",
+            "properties": {
+                "statistics": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "integer"
+                    }
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "OK",
+                        " NOT OK"
+                    ]
+                }
+            }
+        }
+    }
+}

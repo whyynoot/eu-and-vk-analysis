@@ -48,9 +48,9 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 // @Summary Get interests
 // @Description Get interests by performance
 // @Tags Interests
-// @Param filter path string true "Filter"
-// @Success 200 {object} client_models.Response
-// @Failure 400,500 {object} client_models.Response
+// @Param filter path string true "Filter" Enums(bad, good, excellent, three)
+// @Success 200 {object} client_models.Response  Statistics struct key is GROUP_NAME and value is people count in GROUP_NAME
+// @Failure 400,500 {object} client_models.Response  
 // @Router /interests/{filter} [get]
 func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Request) {
 	InputPerformance := mux.Vars(req)["filter"]
@@ -71,14 +71,15 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 	}
 }
 
-// Get student performance  ... Get student performance by vk group
-// @Summary Get student performance
-// @Description Get student performance by vk group
-// @Tags Students
-// @Param filter path string true "Filter"
-// @Success 200 {object} client_models.Response
+// Get students ... Get students by filter
+// @Summary Get students by filter 
+// @Description Get students by filter
+// @Description Currently only supporting vk group id
+// @Tags Students 
+// @Param filter path string true "Filter" 
+// @Success 200 {object} client_models.Response  Statisctic struct is {"NA": 0, "three": 0, "good": 0, "excellent": 0}
 // @Failure 400,500 {object} client_models.Response
-// @Router /students/{filter} [get]
+// @Router /studnets/{filter} [get]
 func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Request) {
 	InputGroupId := mux.Vars(req)["filter"]
 	GroupId, err := strconv.Atoi(InputGroupId)
