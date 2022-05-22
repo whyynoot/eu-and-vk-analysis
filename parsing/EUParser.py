@@ -89,7 +89,7 @@ class EUParser:
             self.login()
         print("Start parsing...")
         try:
-            response = self.session.get('https://eu.bmstu.ru/modules/session/', proxies=self.proxy)
+            response = self.session.get('https://eu.bmstu.ru/modules/session/?session_id=32', proxies=self.proxy)
             response.encoding = 'utf-8'
         except Exception as e:
             raise Exception("Unable to parse groups", e)
@@ -103,12 +103,12 @@ class EUParser:
 
             print(f"Total groups found {len(groups)}")
 
-            for group in groups:
-                try:
-                    self.parse_students(group)
-                except Exception as e:
-                    print(f"Error with {group.text}", e)
-                    pass
+        for group in groups:
+            try:
+                self.parse_students(group)
+            except Exception as e:
+                print(f"Error with {group.text}", e)
+                pass
         else:
             raise Exception("Session's status code error")
 
@@ -118,8 +118,10 @@ class EUParser:
         try:
             response = self.session.get(f'https://eu.bmstu.ru/{group_link}', proxies=self.proxy)
             response.encoding = 'utf-8'
+            #print(response.text)
             if response.status_code == 200:
                 html = BeautifulSoup(response.text, features='lxml')
+                print(html.find("title"))
                 table = iter(html.find('table').find_all('tr'))
                 next(table)
                 for row in table:
