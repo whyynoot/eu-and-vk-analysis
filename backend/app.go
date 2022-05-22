@@ -41,6 +41,7 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 	}
 	w.WriteHeader(code)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(js)
 }

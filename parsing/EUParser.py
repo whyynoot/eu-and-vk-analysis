@@ -162,7 +162,7 @@ class EUParser:
                 for i in range(1, len(credit) + 1):
                     setattr(db_mark, f"credit_{i}", credit[i - 1])
                 for i in range(1, len(exam) + 1):
-                    setattr(db_mark, f"exam_{i}", credit[i - 1])
+                    setattr(db_mark, f"exam_{i}", exam[i - 1])
                 db_marks.append(db_mark)
         return db_marks
 
