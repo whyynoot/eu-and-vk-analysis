@@ -19,7 +19,7 @@ require (
 	github.com/jackc/pgx v3.6.2+incompatible // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
-	github.com/lib/pq v1.8.0 // indirect
+	github.com/lib/pq v1.10.6 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-sqlite3 v1.14.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect

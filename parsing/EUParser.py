@@ -97,15 +97,15 @@ class EUParser:
         if response.status_code == 200:
             html = BeautifulSoup(response.text, features='lxml')
 
-            groups = html.find_all("a", {'name': 'sdlk'})
-            # REMOVE TEST GROUP
-            #groups = ['modules/session/group/201a4dfa-8610-11ea-8d72-005056960017/']
+            #groups = html.find_all("a", {'name': 'sdlk'})
+            #REMOVE TEST GROUP
+            groups = ['modules/session/group/201a4dfa-8610-11ea-8d72-005056960017/']
 
             print(f"Total groups found {len(groups)}")
 
             for group in groups:
                 try:
-                    self.parse_students(group['href'])
+                    self.parse_students(group)
                 except Exception as e:
                     print(f"Error with {group.text}", e)
                     pass

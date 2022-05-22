@@ -5,8 +5,9 @@ import (
 	"eu-and-vk-analysis/backend/database_models"
 	"eu-and-vk-analysis/backend/models"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/kelseyhightower/envconfig"
+	//_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	"gopkg.in/reform.v1"
 	"gopkg.in/reform.v1/dialects/mysql"
 	"log"
@@ -17,9 +18,9 @@ import (
 // TODO: Release database work
 
 type DataBaseManager struct {
-	DbUrl string
+	DbUrl         string
 	sqlConnection *sql.DB
-	reform *reform.DB
+	reform        *reform.DB
 }
 
 type DataBaseConfig struct {
@@ -35,16 +36,16 @@ func NewDataBaseManager() (*DataBaseManager, error) {
 	return &DataBaseManager{DbUrl: cfg.DbUrl}, nil
 }
 
-func (db* DataBaseManager) Connect() error {
+func (db *DataBaseManager) Connect() error {
 	var err error
-	db.sqlConnection, err = sql.Open("mysql", db.DbUrl)
+	db.sqlConnection, err = sql.Open("pq", db.DbUrl)
 	if err != nil {
 		return err
 	}
-	//err = db.sqlConnection.Ping()
-	//if err != nil {
-	//	return err
-	//}
+	err = db.sqlConnection.Ping()
+	if err != nil {
+		return err
+	}
 
 	logger := log.New(os.Stderr, "SQL: ", log.Flags())
 
@@ -53,7 +54,7 @@ func (db* DataBaseManager) Connect() error {
 	return nil
 }
 
-func (db* DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.Student, error) {
+func (db *DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.Student, error) {
 	ExtraQuery := `INNER JOIN groupsstudents AS g on s.id = g.student_id WHERE g.group_id = ?`
 
 	Students, err := db.getStudentMarksByQuery(ExtraQuery, group)
@@ -64,7 +65,7 @@ func (db* DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.St
 	return Students, nil
 }
 
-func (db* DataBaseManager) GetStudentsWithPerformance(performance int) ([]models.Student, error) {
+func (db *DataBaseManager) GetStudentsWithPerformance(performance int) ([]models.Student, error) {
 	var ExtraQuery string
 	if performance == 5 {
 		ExtraQuery = `WHERE (m.credit_1 > 0 OR m.credit_1 is null) AND (m.credit_2 > 0 OR m.credit_2 is null) AND (m.credit_3 > 0 OR m.credit_3 is null) AND (m.credit_4 > 0 OR m.credit_4 is null) AND (m.credit_5 > 0 OR m.credit_5 is null) AND (m.credit_6 > 0 OR m.credit_6 is null) AND (m.credit_7 > 0 OR m.credit_7 is null) AND (m.credit_8 > 0 OR m.credit_8 is null) AND (m.credit_9 > 0 OR m.credit_9 is null) AND (m.credit_10 > 0 OR m.credit_10 is null)
@@ -90,7 +91,7 @@ func (db* DataBaseManager) GetStudentsWithPerformance(performance int) ([]models
 	return Students, nil
 }
 
-func (db* DataBaseManager) GetStudentGroupsById(id int32)  ([]models.VKGroup, error) {
+func (db *DataBaseManager) GetStudentGroupsById(id int32) ([]models.VKGroup, error) {
 	q := "SELECT g.id, g.category FROM vkgroups as g join groupsstudents on groupsstudents.group_id = g.id where groupsstudents.student_id = ?"
 
 	GroupsRows, err := db.sqlConnection.Query(q, id)
@@ -113,7 +114,7 @@ func (db* DataBaseManager) GetStudentGroupsById(id int32)  ([]models.VKGroup, er
 }
 
 // private method
-func (db* DataBaseManager) getStudentMarksByQuery (ExtraQuery string, args ...interface{}) ([]models.Student, error) {
+func (db *DataBaseManager) getStudentMarksByQuery(ExtraQuery string, args ...interface{}) ([]models.Student, error) {
 	var Students []models.Student
 
 	q := `SELECT s.id,
@@ -146,6 +147,6 @@ func (db* DataBaseManager) getStudentMarksByQuery (ExtraQuery string, args ...in
 	return Students, nil
 }
 
-func (db* DataBaseManager) CloseDB() {
+func (db *DataBaseManager) CloseDB() {
 	_ = db.sqlConnection.Close()
 }

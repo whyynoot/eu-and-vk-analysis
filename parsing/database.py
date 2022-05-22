@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import sqlalchemy_utils
 import json
 from sqlalchemy.orm import Session
+import os
 
 
 class DataBase:
@@ -12,13 +13,11 @@ class DataBase:
     DATABASE_NAME = 'euandvk'
 
     def __init__(self):
-        self.password = None
-        self.user = None
-        self.server = None
+        self.DATABASE_URL = None
 
         self.get_config_data()
 
-        self.engine = sqlalchemy.create_engine(f'mysql+pymysql://{self.user}:{self.password}@{self.server}/{self.DATABASE_NAME}?charset=utf8mb4')
+        self.engine = sqlalchemy.create_engine(self.DATABASE_URL)
 
         self.init_db()
         self.session = Session(bind=self.engine)
@@ -31,14 +30,17 @@ class DataBase:
             print("Database was not created as it exists")
 
     def get_config_data(self):
-        try:
-            with open(self.CONFIG_FILE) as json_data_file:
-                data = json.load(json_data_file)
-                self.user = data['mysql']['user']
-                self.password = data['mysql']['password']
-                self.server = data['mysql']['server']
-        except Exception as e:
-            raise Exception("Unable to get config data", e)
+        self.DATABASE_URL = os.environ.get("DATABASE_URL")
+        if self.DATABASE_URL is None:
+            raise Exception("No database url provided")
+        # try:
+        #     with open(self.CONFIG_FILE) as json_data_file:
+        #         data = json.load(json_data_file)
+        #         self.user = data['mysql']['user']
+        #         self.password = data['mysql']['password']
+        #         self.server = data['mysql']['server']
+        # except Exception as e:
+        #     raise Exception("Unable to get config data", e)
 
 
 Base = declarative_base()
