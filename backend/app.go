@@ -49,7 +49,7 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 // @Description Get interests by performance
 // @Tags Interests
 // @Param filter path string true "Filter" Enums(bad, good, excellent, three)
-// @Success 200 {object} client_models.Response example({"status": "OK", "statistics": {"total_students": 2, "GroupName1": 1, "GroupName2": 2 }})
+// @Success 200 {object} client_models.Response
 // @Failure 400,500 {object} client_models.BadResponse
 // @Router /interests/{filter} [get]
 func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Request) {
@@ -76,7 +76,7 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 // @Description Currently only supporting vk group id
 // @Tags Students
 // @Param filter path string true "Filter"
-// @Success 200 {object} client_models.Response example({"status": "OK", "statistics": {"NA": 0, "three": 0, "good": 0, "excellent": 0}})
+// @Success 200 {object} client_models.Response
 // @Failure 400,500 {object} client_models.BadResponse
 // @Router /students/{filter} [get]
 func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Request) {

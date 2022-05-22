@@ -17,7 +17,7 @@ definitions:
         - OK
         type: string
     type: object
-host: localhost:8000
+host: euandvkanalysis.herokuapp.com
 info:
   contact: {}
   title: EU and VK Analytics API documentation
@@ -39,8 +39,7 @@ paths:
         type: string
       responses:
         "200":
-          description: 'status": "OK", "statistics": {"total_students": 2, "GroupName1":
-            1, "GroupName2": 2 }})'
+          description: OK
           schema:
             $ref: '#/definitions/client_models.Response'
         "400":
@@ -67,8 +66,7 @@ paths:
         type: string
       responses:
         "200":
-          description: 'status": "OK", "statistics": {"NA": 0, "three": 0, "good":
-            0, "excellent": 0}})'
+          description: OK
           schema:
             $ref: '#/definitions/client_models.Response'
         "400":

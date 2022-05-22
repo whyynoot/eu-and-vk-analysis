@@ -40,7 +40,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "status\": \"OK\", \"statistics\": {\"total_students\": 2, \"GroupName1\": 1, \"GroupName2\": 2 }})",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
@@ -78,7 +78,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "status\": \"OK\", \"statistics\": {\"NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}})",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
@@ -132,7 +132,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "localhost:8000",
+	Host:             "euandvkanalysis.herokuapp.com",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "EU and VK Analytics API documentation",

@@ -5,7 +5,7 @@
         "contact": {},
         "version": "1.0.0"
     },
-    "host": "localhost:8000",
+    "host": "euandvkanalysis.herokuapp.com",
     "basePath": "/",
     "paths": {
         "/interests/{filter}": {
@@ -32,7 +32,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "status\": \"OK\", \"statistics\": {\"total_students\": 2, \"GroupName1\": 1, \"GroupName2\": 2 }})",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
@@ -70,7 +70,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "status\": \"OK\", \"statistics\": {\"NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}})",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
