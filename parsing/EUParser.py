@@ -155,7 +155,7 @@ class EUParser:
     @staticmethod
     def convert_marks(marks, students):
         db_marks = []
-        for i in range(students):
+        for i in range(len(students)):
             db_mark = Marks(student_id=students[i].id)
             (credit, exam) = marks[i]
             for i in range(1, len(credit) + 1):
