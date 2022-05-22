@@ -30,9 +30,9 @@ class DataBase:
             print("Database was not created as it exists")
 
     def get_config_data(self):
-        self.DATABASE_URL = os.environ.get("DATABASE_URL")
+        self.DATABASE_URL = os.environ.get("DATABASE_URI")
         if self.DATABASE_URL is None:
-            self.DATABASE_URL = 'postgresql://rqxxhrycxcykrb:26d5ce201775da6660055eff5441a2cd2c9c4361960cdfdb1eba67390e7eafbe@ec2-52-212-228-71.eu-west-1.compute.amazonaws.com:5432/d739lkh2pu970l'
+            raise Exception("No database url provided")
         # try:
         #     with open(self.CONFIG_FILE) as json_data_file:
         #         data = json.load(json_data_file)
