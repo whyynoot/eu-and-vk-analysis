@@ -7,172 +7,190 @@
     --color-button-choice: #A5A6F6;
     --color-text-button: #fff;
     --color-button-menu:#5D5FEF;
+    --color-button-hover: aquamarine;
 }
 
 
 body {
     background: var(--color-bg);
-    font-family: 'Inter', 'Trebuchet MS',  sans-serif;
+    font-family: 'Inter', 'Trebuchet MS', sans-serif;
     margin-top: 110px;
-    
+    margin-left: 100px;
+
 }
+
+.footer{
+    bottom:5px;
+}
+
 main{
     max-width: 1000px;
+    margin-left: 80px;
 }
 p{
     margin-left:20px;
-    width: 55%;
+    width: 45%;
 }
 .header{
-  position: fixed;
-  width: 100%;
-  height: 100px;
-  left: 0px;
-  top: 0px;
+    position: fixed;
+    width: 100%;
+    height: 100px;
+    left: 0px;
+    top: 0px;
 
-  background: var(--color-bg-alt);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  z-index: 1;
+    background: var(--color-bg-alt);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    z-index: 1;
 }
 
 img[alt="logo"]{
-      height: 80px;
-  width: 70px;
-  position: absolute;
-  left: 20px;
-  top: 7px;
+    height: 80px;
+    width: 70px;
+    position: absolute;
+    left: 20px;
+    top: 7px;
 }
 
 .header h1{
-  position: absolute;
-     left: 90px;
+    position: absolute;
+    left: 90px;
     right:75px;
- 
-height: 78px;
+
+    height: 78px;
     vertical-align: center;
 
 
-top: 0px;
+    top: 0px;
 
-font-style: normal;
+    font-style: normal;
     font-size: 110%;
-font-weight: 700;
-line-height: 20
-    px;
-text-align: center;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
 
 }
 .header h2{
-  position: absolute;
-     left: 80px;
+    position: absolute;
+    left: 80px;
     right:75px;
- 
-height: 50px;
+
+    height: 50px;
 
 
-top:0px;
+    top:0px;
 
-font-style: normal;
-font-weight: 700;
-line-height: 20
-    px;
-text-align: center;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+    text-align: center;
 
 }
 
 
 img[alt="menu-icon"]{
     position: fixed;
-width: 50px;
-height: 50px;
-right: 20px;
-top: 25px;
+    width: 50px;
+    height: 50px;
+    right: 20px;
+    top: 25px;
     z-index: 1;
 }
 
 
 img[alt="back-icon"]{
-  position: absolute;
-width: 50px;
-height: 50px;
-left: 20px;
-top: 25px;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    left: 20px;
+    top: 25px;
 }
 
 .menu-button{
     position: absolute;
-width: 35%;
-height: 65px;
-left: 60%;
-max-width: 250px;
+    width: 35%;
+    height: 65px;
+    left: 60%;
+    max-width: 250px;
     margin:10px;
 
-background: var(--color-button-menu);
-border-radius: 50px;
+    background: var(--color-button-menu);
+    border-radius: 50px;
 
-color: var(--color-text-button);
-font-weight: 700;
-    
-    
+    color: var(--color-text-button);
+    font-weight: 700;
+
+
+}
+
+.menu-button:hover{
+    background-color: var(--color-button-hover);
+    transition: .5s;
 }
 
 .choice-back, .result-back {
-width: 70%;
-   max-width: 1000px;
+    width: 70%;
+    max-width: 1000px;
 
-height: 250px;
-margin-left: 10%;
-margin-top:30px;
+    height: 250px;
+    margin-left: 10%;
+    margin-top:30px;
 
-    
-background: var(--color-bg-block);
-border-radius: 25px;
-text-align: center;
+
+    background: var(--color-bg-block);
+    border-radius: 25px;
+    text-align: center;
     padding-top: 20px;
-        font-size: 1em;
+    font-size: 1em;
     font-weight: 550;
 
 
 }
 
 .choice-back button{
-width: 30%;
-height: 50px;
+    width: 30%;
+    height: 50px;
     margin:15px;
     min-width: 150px;
 
-background: var(--color-button-choice);
-box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-border-radius: 20px;
-    
+    background: var(--color-button-choice);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+
     color: var(--color-text-button);
-font-weight: 600;
+    font-weight: 600;
     font-size: 1em
 }
 
+.choice-back button:hover{
+    background-color: var(--color-button-hover);
+    transition: .5s;
+}
+
+
 .result-back img{
-    width: 200px; 
-margin: 20px    
+    width: 200px;
+    margin: 20px
 }
 
 .choice-back input{
     width: 80%;
-height: 40px;
-margin: 15px;
+    height: 40px;
+    margin: 15px;
 
-background: #E1E1E1;
-border-radius: 30px;
+    background: #E1E1E1;
+    border-radius: 30px;
     color
-    : #FFFFFF;
-    
+    : #666;
+
 }
 
 .menu{
     background-color: var(--color-bg-menu);
     position: fixed;
-    width: 90%;
+    width: 450px;
     padding: 30px;
     padding-top: 0px;
+    right: 0px;
     outline-color: var(--color-text-button);
 
     top:50px;
@@ -180,7 +198,7 @@ border-radius: 30px;
     border-radius: 5px;
     display: none;
     text-align: center;
-    
+
 }
 .menu-dropdown a:hover{
     color: red;
@@ -189,5 +207,7 @@ border-radius: 30px;
     display: block;
 }
 
-
-
+@media screen and (min-width:1440px)
+{
+    body {margin-left: 200px; }
+}

@@ -12,7 +12,7 @@
        <div class="header">
        <a href="index.html"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243939.png?w=740"  alt="back-icon"> </a>
        <h2>Анализ категорий подписок по успеваемости студентов</h2>
-       <img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon"> 
+       <img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon">>
        </div>
        
         
@@ -51,8 +51,9 @@
       <div class=result-back style="height: auto;">
     Результаты анализа:  <br>
 
-      <img src="/images/bar-diagram.png"  alt="bar-diagram">
-       <img src="/images/sector-diagram.png"  alt="sector-diagram"> 
+          <canvas id="myChart"  ></canvas>
+          <canvas id="bar-chart-categories"  ></canvas>
+          <canvas id="sector-chart-categories"  ></canvas>
      </div>
 
 
@@ -70,6 +71,145 @@
     <button class="menu-button" style="left: 10%;  bottom: 5px;     position: relative;
     ">Скачать результаты</button>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script>
+    /*    // Vertical bar chart
+               var ctx = document.getElementById('myChart').getContext('2d');
+               var myChart = new Chart(ctx, {
+                   type: 'bar',
+                   data: {
+                       labels: ['Hong Kong', 'Macau', 'Japan', 'Switzerland', 'Spain', 'Singapore'],
+                       datasets: [{
+                           label: 'Life expectancy',
+                           data: [84.308, 84.188, 84.118, 83.706, 83.5, 83.468],
+                           backgroundColor: [
+                               'rgba(216, 27, 96, 0.6)',
+                               'rgba(3, 169, 244, 0.6)',
+                               'rgba(255, 152, 0, 0.6)',
+                               'rgba(29, 233, 182, 0.6)',
+                               'rgba(156, 39, 176, 0.6)',
+                               'rgba(84, 110, 122, 0.6)'
+                           ],
+                           borderColor: [
+                               'rgba(216, 27, 96, 1)',
+                               'rgba(3, 169, 244, 1)',
+                               'rgba(255, 152, 0, 1)',
+                               'rgba(29, 233, 182, 1)',
+                               'rgba(156, 39, 176, 1)',
+                               'rgba(84, 110, 122, 1)'
+                           ],
+                           borderWidth: 1
+                       }]
+                   },
+                   options: {
+                       legend: {
+                           display: false
+                       },
+                       title: {
+                           display: true,
+                           text: 'Life Expectancy by Country',
+                           position: 'top',
+                           fontSize: 16,
+                           padding: 20
+                       },
+                       scales: {
+                           yAxes: [{
+                               ticks: {
+                                   min: 75
+                               }
+                           }]
+                       }
+                   }
+               });
+   */
+</script>
+
+<script>
+
+    var choiceBtn=document.querySelector('#choice-stud');
+    var url;
+
+    choiceBtn.addEventListener('click', event=>{
+        if ((event.target.name==='bad')||(event.target.name==='three')||(event.target.name==='good')||(event.target.name==='excellent')){
+            switch (event.target.name){
+                case 'excellent':
+                    url='https://euandvkanalysis.herokuapp.com/interests/excellent';
+                    break;
+                case 'good':
+                    url='https://euandvkanalysis.herokuapp.com/interests/good';
+                    break;
+                case 'three':
+                    url='https://euandvkanalysis.herokuapp.com/interests/three';
+                    break;
+                case 'bad':
+                    url='https://euandvkanalysis.herokuapp.com/interests/bad';
+                    break;
+            }}
+            fetch(url, {method: 'GET', mode: 'no-cors'})
+                .then(resp => resp.json())
+                .then(function(data) {
+                    if (data.status=="OK"){
+                        var labels =  Array.from(data.statistics.values());
+                        var data_chart = Array.from(data.statistics.keys());
+
+                        //  объект resp с которым надо работать
+                        // и тут ты ренедеришь собственно саму диаграму
+
+                        // Vertical bar chart
+                        var ctx = document.getElementById('bar-chart-categories').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Количество подписчиков',
+                                    data: data_chart,
+                                    backgroundColor: [
+                                        'rgba(216, 27, 96, 0.6)',
+                                        'rgba(3, 169, 244, 0.6)',
+                                        'rgba(255, 152, 0, 0.6)',
+                                        'rgba(29, 233, 182, 0.6)',
+                                        'rgba(156, 39, 176, 0.6)',
+                                        'rgba(84, 110, 122, 0.6)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(216, 27, 96, 1)',
+                                        'rgba(3, 169, 244, 1)',
+                                        'rgba(255, 152, 0, 1)',
+                                        'rgba(29, 233, 182, 1)',
+                                        'rgba(156, 39, 176, 1)',
+                                        'rgba(84, 110, 122, 1)'
+                                    ],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Количество подписчиков по категориям сообществ',
+                                    position: 'top',
+                                    fontSize: 16,
+                                    padding: 20
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            min: 75
+                                        }
+                                    }]
+                                }
+                            }
+                        })
+                    }
+                }).catch(function(error) {
+                    console.log(error);
+            }
+            )
+
+</script>
 
 <footer>
     
