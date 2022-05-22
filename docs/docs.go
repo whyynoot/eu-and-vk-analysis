@@ -40,7 +40,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "status\": \"OK\", \"statistics\": {\"total_students\": 2, \"GroupName1\": 1, \"GroupName2\": 2 }})",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
@@ -78,7 +78,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}",
+                        "description": "status\": \"OK\", \"statistics\": {\"NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}})",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
