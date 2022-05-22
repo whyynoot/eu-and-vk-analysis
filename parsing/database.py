@@ -32,7 +32,7 @@ class DataBase:
     def get_config_data(self):
         self.DATABASE_URL = os.environ.get("DATABASE_URI")
         if self.DATABASE_URL is None:
-            raise Exception("No database url provided")
+            self.DATABASE_URL = 'postgresql://dyxiioicccjhqf:03b69c2b11534de1a7d182a61ceb1cc4bd5e496acc5b16b1db92d193ac38a330@ec2-176-34-211-0.eu-west-1.compute.amazonaws.com:5432/d2sqkq88hu8qnu'
         # try:
         #     with open(self.CONFIG_FILE) as json_data_file:
         #         data = json.load(json_data_file)

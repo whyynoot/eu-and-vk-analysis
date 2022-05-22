@@ -24,7 +24,7 @@ type DataBaseManager struct {
 }
 
 type DataBaseConfig struct {
-	DbUrl string `envconfig:"DB_URL" default:"postgres://rqxxhrycxcykrb:26d5ce201775da6660055eff5441a2cd2c9c4361960cdfdb1eba67390e7eafbe@ec2-52-212-228-71.eu-west-1.compute.amazonaws.com:5432/d739lkh2pu970l"`
+	DbUrl string `envconfig:"DATABASE_URL"`
 }
 
 func NewDataBaseManager() (*DataBaseManager, error) {
