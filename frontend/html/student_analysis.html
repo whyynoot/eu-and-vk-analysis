@@ -3,128 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Аналитика интересов по успеваемости </title>
-        <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../CSS/style.css">
 
 </head>
 <body>
 <header>
 
-       <div class="header">
-       <a href="index.html"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243939.png?w=740"  alt="back-icon"> </a>
-       <h2>Анализ категорий подписок по успеваемости студентов</h2>
-       <img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon">>
-       </div>
-       
-        
-      <div class="menu-dropdown">
-      
-       <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon" >  </a>
-             <div class="menu">
-                   <h2>МЕНЮ</h2>
-                    <a href="index.html">Главная страница
-                </a><br>
-                    <a href="student_analysis.html">Аналитика интересов по&nbsp;успеваемости
-                </a><br>
-                    <a href="subscribe_analysis.html">Аналитика успеваемости подписчиков сообщества
-                        </a><br>
-                    <a href="documentation.html">Документация проекта
-                       </a>
-                </div>
+    <div class="header">
+        <a href="index.html"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243939.png?w=740"  alt="back-icon"> </a>
+        <h2>Анализ категорий подписок по успеваемости студентов</h2>
+        <img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon">
+    </div>
+
+
+    <div class="menu-dropdown">
+
+        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon" >  </a>
+        <div class="menu">
+            <h2>МЕНЮ</h2>
+            <a href="index.html">Главная страница
+            </a><br>
+            <a href="student_analysis.html">Аналитика интересов по&nbsp;успеваемости
+            </a><br>
+            <a href="subscribe_analysis.html">Аналитика успеваемости подписчиков сообщества
+            </a><br>
+            <a href="documentation.html">Документация проекта
+            </a>
         </div>
-        
+    </div>
+
 </header>
 
 <main>
- 
-     <div class=choice-back style="height: auto;">
-         Выберите категорию студентов для анализа: <br>
-         <button >Отличники</button>
-         <button >Хорошисты</button>
-         <button >Троечники</button>
-         <button >Неуспевающие</button>
-     </div>
 
-     <br>
-     <br>
-     <br>
+    <div id="choice-stud" class=choice-back style="height: auto;">
+        Выберите категорию студентов для анализа: <br>
 
-      <div class=result-back style="height: auto;">
-    Результаты анализа:  <br>
+        <a href="#result-stud"><button name="excellent" style="margin-left: ; top: 30%;" >Отличники</button></a>
 
-          <canvas id="myChart"  ></canvas>
-          <canvas id="bar-chart-categories"  ></canvas>
-          <canvas id="sector-chart-categories"  ></canvas>
-     </div>
+        <a href="#result-stud"><button name="good">Хорошисты</button></a>
+
+        <a href="#result-stud"><button name="three">Троечники</button></a>
+
+        <a href="#result-stud"><button name="bad">Неуспевающие</button></a>
+    </div>
 
 
 
-     <h4>Выводы:</h4>
+    <a name="result-stud"></a>
 
-    <ul>
-      <li>Количество проанализированных студентов:</li>
-      <li>Количество выявленных категорий сообществ:</li>
-      <li>Студентам данной категории свойственнен интерес к:</li>
-      <li>Самой популярной категорией подписок у студентов является:</li>
+    <br>
+    <br>
+    <br>
 
-    </ul>
+    <div class=result-back style="height: auto;">
+        Результаты анализа:  <br>
 
-    <button class="menu-button" style="left: 10%;  bottom: 5px;     position: relative;
-    ">Скачать результаты</button>
+        <canvas id="myChart"  ></canvas>
+        <canvas id="bar-chart-categories"  ></canvas>
+        <canvas id="sector-chart-categories"  ></canvas>
+
+
+
+
+
+        <br> <br>
+
+        <a href="..." >Скачать результаты</a>
+
+    </div>
+
+
+    <br>
+
+
 </main>
+<footer>
+    &copy;  МГТУ им.Баумана, 2022
+</footer>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script>
-    /*    // Vertical bar chart
-               var ctx = document.getElementById('myChart').getContext('2d');
-               var myChart = new Chart(ctx, {
-                   type: 'bar',
-                   data: {
-                       labels: ['Hong Kong', 'Macau', 'Japan', 'Switzerland', 'Spain', 'Singapore'],
-                       datasets: [{
-                           label: 'Life expectancy',
-                           data: [84.308, 84.188, 84.118, 83.706, 83.5, 83.468],
-                           backgroundColor: [
-                               'rgba(216, 27, 96, 0.6)',
-                               'rgba(3, 169, 244, 0.6)',
-                               'rgba(255, 152, 0, 0.6)',
-                               'rgba(29, 233, 182, 0.6)',
-                               'rgba(156, 39, 176, 0.6)',
-                               'rgba(84, 110, 122, 0.6)'
-                           ],
-                           borderColor: [
-                               'rgba(216, 27, 96, 1)',
-                               'rgba(3, 169, 244, 1)',
-                               'rgba(255, 152, 0, 1)',
-                               'rgba(29, 233, 182, 1)',
-                               'rgba(156, 39, 176, 1)',
-                               'rgba(84, 110, 122, 1)'
-                           ],
-                           borderWidth: 1
-                       }]
-                   },
-                   options: {
-                       legend: {
-                           display: false
-                       },
-                       title: {
-                           display: true,
-                           text: 'Life Expectancy by Country',
-                           position: 'top',
-                           fontSize: 16,
-                           padding: 20
-                       },
-                       scales: {
-                           yAxes: [{
-                               ticks: {
-                                   min: 75
-                               }
-                           }]
-                       }
-                   }
-               });
-   */
-</script>
 
-<script>
 
     var choiceBtn=document.querySelector('#choice-stud');
     var url;
@@ -145,74 +106,74 @@
                     url='https://euandvkanalysis.herokuapp.com/interests/bad';
                     break;
             }}
-            fetch(url, {method: 'GET', mode: 'no-cors'})
-                .then(resp => resp.json())
-                .then(function(data) {
-                    if (data.status=="OK"){
-                        var labels =  Array.from(data.statistics.values());
-                        var data_chart = Array.from(data.statistics.keys());
+        fetch(url, {method: 'GET', mode: 'no-cors'})
+            .then(resp => resp.json())
+            .then(function(data) {
+                if (data.status=="OK"){
+                    var labels =  Array.from(data.statistics.values());
+                    var data_chart = Array.from(data.statistics.keys());
 
-                        //  объект resp с которым надо работать
-                        // и тут ты ренедеришь собственно саму диаграму
+                    //  объект resp с которым надо работать
+                    // и тут ты ренедеришь собственно саму диаграму
 
-                        // Vertical bar chart
-                        var ctx = document.getElementById('bar-chart-categories').getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: labels,
-                                datasets: [{
-                                    label: 'Количество подписчиков',
-                                    data: data_chart,
-                                    backgroundColor: [
-                                        'rgba(216, 27, 96, 0.6)',
-                                        'rgba(3, 169, 244, 0.6)',
-                                        'rgba(255, 152, 0, 0.6)',
-                                        'rgba(29, 233, 182, 0.6)',
-                                        'rgba(156, 39, 176, 0.6)',
-                                        'rgba(84, 110, 122, 0.6)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(216, 27, 96, 1)',
-                                        'rgba(3, 169, 244, 1)',
-                                        'rgba(255, 152, 0, 1)',
-                                        'rgba(29, 233, 182, 1)',
-                                        'rgba(156, 39, 176, 1)',
-                                        'rgba(84, 110, 122, 1)'
-                                    ],
-                                    borderWidth: 1
-                                }]
+                    // Vertical bar chart
+                    var ctx = document.getElementById('bar-chart-categories').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Количество подписчиков',
+                                data: data_chart,
+                                backgroundColor: [
+                                    'rgba(216, 27, 96, 0.6)',
+                                    'rgba(3, 169, 244, 0.6)',
+                                    'rgba(255, 152, 0, 0.6)',
+                                    'rgba(29, 233, 182, 0.6)',
+                                    'rgba(156, 39, 176, 0.6)',
+                                    'rgba(84, 110, 122, 0.6)'
+                                ],
+                                borderColor: [
+                                    'rgba(216, 27, 96, 1)',
+                                    'rgba(3, 169, 244, 1)',
+                                    'rgba(255, 152, 0, 1)',
+                                    'rgba(29, 233, 182, 1)',
+                                    'rgba(156, 39, 176, 1)',
+                                    'rgba(84, 110, 122, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                display: false
                             },
-                            options: {
-                                legend: {
-                                    display: false
-                                },
-                                title: {
-                                    display: true,
-                                    text: 'Количество подписчиков по категориям сообществ',
-                                    position: 'top',
-                                    fontSize: 16,
-                                    padding: 20
-                                },
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            min: 75
-                                        }
-                                    }]
-                                }
+                            title: {
+                                display: true,
+                                text: 'Количество подписчиков по категориям сообществ',
+                                position: 'top',
+                                fontSize: 16,
+                                padding: 20
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        min: 75
+                                    }
+                                }]
                             }
-                        })
-                    }
-                }).catch(function(error) {
-                    console.log(error);
+                        }
+                    })
+                }
+            }).catch(function(error) {
+                console.log(error);
             }
-            )
+        )})
 
 </script>
 
 <footer>
-    
+    Copyright
 </footer>
 
 
