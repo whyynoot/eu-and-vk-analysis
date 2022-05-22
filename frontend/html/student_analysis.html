@@ -110,8 +110,12 @@
             .then(resp => resp.json())
             .then(function(data) {
                 if (data.status=="OK"){
-                    var labels =  Array.from(data.statistics.values());
-                    var data_chart = Array.from(data.statistics.keys());
+                    var labels;
+                    var data_chart;
+                    for(var i in data.statistics) {
+                        labels.push(i);
+                        data_chart.push(data.statistics[i]);
+                    }
 
                     //  объект resp с которым надо работать
                     // и тут ты ренедеришь собственно саму диаграму

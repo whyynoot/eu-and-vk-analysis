@@ -186,10 +186,10 @@
         fetch(url, {
             method: 'GET'
         }).then(resp => resp.json()).then(function(data) {
-            if (resp.status=="OK"){
+            if (data.status=="OK"){
 
-                var labels = pesp.statistics;
-                var data=resp.statistics;
+                var labels = data.statistics;
+                var dataChart = data.statistics;
 
                 // Vertical bar chart
                 var ctx = document.getElementById('bar-chart-student').getContext('2d');
@@ -199,7 +199,7 @@
                         labels: ['Отличники', 'Хорошисты', 'Троечники', 'Неуспевающие'],
                         datasets: [{
                             label: 'Количество подписчиков',
-                            data: data,
+                            data: dataChart,
                             backgroundColor: [
                                 'rgba(216, 27, 96, 0.6)',
                                 'rgba(3, 169, 244, 0.6)',
