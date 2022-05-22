@@ -38,7 +38,7 @@ func NewDataBaseManager() (*DataBaseManager, error) {
 
 func (db *DataBaseManager) Connect() error {
 	var err error
-	db.sqlConnection, err = sql.Open("pq", db.DbUrl)
+	db.sqlConnection, err = sql.Open("postgres", db.DbUrl)
 	if err != nil {
 		return err
 	}
