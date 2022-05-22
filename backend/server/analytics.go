@@ -2,6 +2,8 @@ package backend
 
 import (
 	"eu-and-vk-analysis/backend/client_models"
+	"github.com/pkg/errors"
+	"log"
 )
 
 type Analytics struct {
@@ -19,8 +21,6 @@ func NewAnalytics() (*Analytics, error) {
 	if err != nil {
 		return nil, err
 	}
-
-
 
 	return &Analytics{
 		DataBaseManager: db,
@@ -41,6 +41,7 @@ func (Analytics *Analytics) AnalyseInterests(filter int) client_models.Response 
 	Interests := map[string]int{"total_students": 0}
 	students, err := Analytics.DataBaseManager.GetStudentsWithPerformance(filter)
 	if err != nil {
+		log.Println(err)
 		return client_models.Response{Status: "NOT OK"}
 	}
 
@@ -72,6 +73,7 @@ func (Analytics *Analytics) AnalyseStudents(GroupID int) client_models.Response 
 
 	Students, err := Analytics.DataBaseManager.GetStudentsPerformanceByGroup(GroupID)
 	if err != nil {
+		log.Println(err)
 		return client_models.Response{Status: "NOT OK"}
 	}
 
@@ -108,12 +110,12 @@ func (Analytics *Analytics) AnalyseStudents(GroupID int) client_models.Response 
 	return client_models.Response{Status: "OK", Statistics: Performance}
 }
 
-func (Analytics *Analytics) CheckCorrectPerformance(InputPerformance string) int {
+func (Analytics *Analytics) CheckCorrectPerformance(InputPerformance string) (int, error) {
 	status, ok := Analytics.performance[InputPerformance]
 	if !ok {
-		return -1
+		return -1, errors.Errorf("%s Filter Not Supported", InputPerformance)
 	}
-	return status
+	return status, nil
 }
 
 

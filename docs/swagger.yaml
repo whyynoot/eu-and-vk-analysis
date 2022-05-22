@@ -1,5 +1,11 @@
 basePath: /
 definitions:
+  client_models.BadResponse:
+    properties:
+      status:
+        example: NOT OK
+        type: string
+    type: object
   client_models.Response:
     properties:
       statistics:
@@ -9,7 +15,6 @@ definitions:
       status:
         enum:
         - OK
-        - ' NOT OK'
         type: string
     type: object
 host: localhost:8000
@@ -40,15 +45,15 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/client_models.Response'
+            $ref: '#/definitions/client_models.BadResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/client_models.Response'
+            $ref: '#/definitions/client_models.BadResponse'
       summary: Get interests
       tags:
       - Interests
-  /studnets/{filter}:
+  /students/{filter}:
     get:
       description: |-
         Get students by filter
@@ -67,11 +72,11 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/client_models.Response'
+            $ref: '#/definitions/client_models.BadResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/client_models.Response'
+            $ref: '#/definitions/client_models.BadResponse'
       summary: Get students by filter
       tags:
       - Students

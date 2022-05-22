@@ -41,6 +41,10 @@ func (db* DataBaseManager) Connect() error {
 	if err != nil {
 		return err
 	}
+	//err = db.sqlConnection.Ping()
+	//if err != nil {
+	//	return err
+	//}
 
 	logger := log.New(os.Stderr, "SQL: ", log.Flags())
 
@@ -50,11 +54,9 @@ func (db* DataBaseManager) Connect() error {
 }
 
 func (db* DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.Student, error) {
-	q := `SELECT s.id,
-    m.credit_1, m.credit_2, m.credit_3, m.credit_4, m.credit_5, m.credit_6, m.credit_7, m.credit_8, m.credit_9, m.credit_10,
-    m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8 FROM students as s JOIN marks m on s.id = m.student_id INNER JOIN groupsstudents AS g on s.id = g.student_id WHERE g.group_id = ?`
+	ExtraQuery := `INNER JOIN groupsstudents AS g on s.id = g.student_id WHERE g.group_id = ?`
 
-	Students, err := db.getStudentMarksByQuery(q, group)
+	Students, err := db.getStudentMarksByQuery(ExtraQuery, group)
 	if err != nil {
 		return nil, err
 	}
@@ -63,23 +65,17 @@ func (db* DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.St
 }
 
 func (db* DataBaseManager) GetStudentsWithPerformance(performance int) ([]models.Student, error) {
-	var q string
+	var ExtraQuery string
 	if performance == 5 {
-		q = `SELECT s.id,
-			  m.credit_1, m.credit_2, m.credit_3, m.credit_4, m.credit_5, m.credit_6, m.credit_7, m.credit_8, m.credit_9, m.credit_10,
-			  m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8
-			  FROM students as s JOIN marks m on s.id = m.student_id WHERE (m.credit_1 > 0 OR m.credit_1 is null) AND (m.credit_2 > 0 OR m.credit_2 is null) AND (m.credit_3 > 0 OR m.credit_3 is null) AND (m.credit_4 > 0 OR m.credit_4 is null) AND (m.credit_5 > 0 OR m.credit_5 is null) AND (m.credit_6 > 0 OR m.credit_6 is null) AND (m.credit_7 > 0 OR m.credit_7 is null) AND (m.credit_8 > 0 OR m.credit_8 is null) AND (m.credit_9 > 0 OR m.credit_9 is null) AND (m.credit_10 > 0 OR m.credit_10 is null)
+		ExtraQuery = `WHERE (m.credit_1 > 0 OR m.credit_1 is null) AND (m.credit_2 > 0 OR m.credit_2 is null) AND (m.credit_3 > 0 OR m.credit_3 is null) AND (m.credit_4 > 0 OR m.credit_4 is null) AND (m.credit_5 > 0 OR m.credit_5 is null) AND (m.credit_6 > 0 OR m.credit_6 is null) AND (m.credit_7 > 0 OR m.credit_7 is null) AND (m.credit_8 > 0 OR m.credit_8 is null) AND (m.credit_9 > 0 OR m.credit_9 is null) AND (m.credit_10 > 0 OR m.credit_10 is null)
 			  AND (exam_1 = 5 OR exam_1 is null) AND (exam_2 = 5 OR exam_2 is null) AND (exam_3 = 5 OR exam_3 is null)AND (exam_4 = 5 OR exam_4 is null)AND (exam_5 = 5 OR exam_5 is null)AND (exam_6 = 5 OR exam_6 is null)AND (exam_7 = 5 OR exam_7 is null)AND (exam_8 = 5 OR exam_8 is null)`
 
 	} else {
-		q = fmt.Sprintf(`SELECT s.id,
-       		m.credit_1, m.credit_2, m.credit_3, m.credit_4, m.credit_5, m.credit_6, m.credit_7, m.credit_8, m.credit_9, m.credit_10,
-       		m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8
-			FROM students as s JOIN marks m on s.id = m.student_id WHERE m.credit_1 = %[1]s OR m.credit_2 = %[1]s OR m.credit_3 = %[1]s OR m.credit_4 = %[1]s OR m.credit_5 = %[1]s OR m.credit_6 = %[1]s OR m.credit_7 = %[1]s OR m.credit_8 = %[1]s OR m.credit_9 = %[1]s OR m.credit_10 = %[1]s
+		ExtraQuery = fmt.Sprintf(`WHERE m.credit_1 = %[1]s OR m.credit_2 = %[1]s OR m.credit_3 = %[1]s OR m.credit_4 = %[1]s OR m.credit_5 = %[1]s OR m.credit_6 = %[1]s OR m.credit_7 = %[1]s OR m.credit_8 = %[1]s OR m.credit_9 = %[1]s OR m.credit_10 = %[1]s
 			OR m.exam_1 = %[1]s OR m.exam_2 = %[1]s OR m.exam_3 = %[1]s OR m.exam_4 = %[1]s OR m.exam_5 = %[1]s OR m.exam_6 = %[1]s OR m.exam_7 = %[1]s OR m.exam_8 = %[1]s `, strconv.Itoa(performance))
 	}
 
-	Students, err := db.getStudentMarksByQuery(q)
+	Students, err := db.getStudentMarksByQuery(ExtraQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -117,8 +113,13 @@ func (db* DataBaseManager) GetStudentGroupsById(id int32)  ([]models.VKGroup, er
 }
 
 // private method
-func (db* DataBaseManager) getStudentMarksByQuery (q string, args ...interface{}) ([]models.Student, error) {
+func (db* DataBaseManager) getStudentMarksByQuery (ExtraQuery string, args ...interface{}) ([]models.Student, error) {
 	var Students []models.Student
+
+	q := `SELECT s.id,
+    m.credit_1, m.credit_2, m.credit_3, m.credit_4, m.credit_5, m.credit_6, m.credit_7, m.credit_8, m.credit_9, m.credit_10,
+    m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8 FROM students as s JOIN marks m on s.id = m.student_id` + ExtraQuery
+
 	StudentMarksRows, err := db.sqlConnection.Query(q, args...)
 	if err != nil {
 		return nil, err

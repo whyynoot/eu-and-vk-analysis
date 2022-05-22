@@ -48,19 +48,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     }
                 }
             }
         },
-        "/studnets/{filter}": {
+        "/students/{filter}": {
             "get": {
                 "description": "Get students by filter\nCurrently only supporting vk group id",
                 "tags": [
@@ -86,13 +86,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     }
                 }
@@ -100,6 +100,15 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "client_models.BadResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "NOT OK"
+                }
+            }
+        },
         "client_models.Response": {
             "type": "object",
             "properties": {
@@ -112,8 +121,7 @@ const docTemplate = `{
                 "status": {
                     "type": "string",
                     "enum": [
-                        "OK",
-                        " NOT OK"
+                        "OK"
                     ]
                 }
             }

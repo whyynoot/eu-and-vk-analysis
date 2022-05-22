@@ -6,12 +6,12 @@ import (
 	"eu-and-vk-analysis/backend/server"
 	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
-	"github.com/swaggo/http-swagger"
 	_ "eu-and-vk-analysis/docs"
 )
 
@@ -50,22 +50,21 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 // @Tags Interests
 // @Param filter path string true "Filter" Enums(bad, good, excellent, three)
 // @Success 200 {object} client_models.Response  Statistics struct key is GROUP_NAME and value is people count in GROUP_NAME
-// @Failure 400,500 {object} client_models.Response  
+// @Failure 400,500 {object} client_models.BadResponse
 // @Router /interests/{filter} [get]
 func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Request) {
 	InputPerformance := mux.Vars(req)["filter"]
-	status := ts.analytics.CheckCorrectPerformance(InputPerformance)
-	if status == -1 {
-		renderJSON(w, client_models.Response{
-			Statistics: nil,
-			Status:     "Filter Not Supported",
+	status, err := ts.analytics.CheckCorrectPerformance(InputPerformance)
+	if err != nil {
+		renderJSON(w, client_models.BadResponse{
+			Status:    err.Error(),
 		}, http.StatusBadRequest)
 		return
 	}
 
 	response := ts.analytics.AnalyseInterests(status)
 	if response.Status != "OK" {
-		renderJSON(w, response, http.StatusInternalServerError)
+		renderJSON(w, client_models.BadResponse{Status: response.Status}, http.StatusInternalServerError)
 	} else {
 		renderJSON(w, response, http.StatusOK)
 	}
@@ -78,14 +77,14 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 // @Tags Students 
 // @Param filter path string true "Filter" 
 // @Success 200 {object} client_models.Response  Statisctic struct is {"NA": 0, "three": 0, "good": 0, "excellent": 0}
-// @Failure 400,500 {object} client_models.Response
-// @Router /studnets/{filter} [get]
+// @Failure 400,500 {object} client_models.BadResponse
+// @Router /students/{filter} [get]
 func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Request) {
 	InputGroupId := mux.Vars(req)["filter"]
 	GroupId, err := strconv.Atoi(InputGroupId)
 	if err != nil {
-		renderJSON(w, client_models.Response{
-			Statistics: nil,
+		log.Println(err)
+		renderJSON(w, client_models.BadResponse{
 			Status:     "Filter Not Supported",
 		}, http.StatusBadRequest)
 		return
@@ -93,12 +92,11 @@ func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Requ
 
 	response := ts.analytics.AnalyseStudents(GroupId)
 	if response.Status != "OK" {
-		renderJSON(w, response, http.StatusInternalServerError)
+		renderJSON(w, client_models.BadResponse{Status: response.Status}, http.StatusInternalServerError)
 	} else {
 		renderJSON(w, response, http.StatusOK)
 	}
 }
-
 
 // App for running, initing server and router
 
@@ -140,6 +138,12 @@ func NewApp() *App {
 	app.router.HandleFunc("/students/{filter}", app.analyticsSever.studentsHandler).Methods("GET")
 
 	app.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	app.router.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./frontend/")))
+	app.router.PathPrefix("/images/").Handler(http.FileServer(http.Dir("./frontend/")))
+	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/html/")))
+	//app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/html")))
+	//app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/")))
+	//app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/images/")))
 
 	app.NewServer(serverConfig.Port)
 
