@@ -103,12 +103,12 @@ class EUParser:
 
             print(f"Total groups found {len(groups)}")
 
-        for group in groups:
-            try:
-                self.parse_students(group)
-            except Exception as e:
-                print(f"Error with {group.text}", e)
-                pass
+            for group in groups:
+                try:
+                    self.parse_students(group)
+                except Exception as e:
+                    print(f"Error with {group.text}", e)
+                    pass
         else:
             raise Exception("Session's status code error")
 
@@ -121,7 +121,6 @@ class EUParser:
             #print(response.text)
             if response.status_code == 200:
                 html = BeautifulSoup(response.text, features='lxml')
-                print(html.find("title"))
                 table = iter(html.find('table').find_all('tr'))
                 next(table)
                 for row in table:
