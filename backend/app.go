@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"eu-and-vk-analysis/backend/client_models"
 	"eu-and-vk-analysis/backend/server"
+	_ "eu-and-vk-analysis/docs"
 	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -12,7 +13,6 @@ import (
 	"os"
 	"strconv"
 	"time"
-	_ "eu-and-vk-analysis/docs"
 )
 
 // Server for router, and server handlers
@@ -29,7 +29,7 @@ func NewAnalyticsServer() (*AnalyticsServer, error) {
 	return &AnalyticsServer{analytics: analytics}, nil
 }
 
-func (ts* AnalyticsServer) closeDB() {
+func (ts *AnalyticsServer) closeDB() {
 	ts.analytics.CloseDB()
 }
 
@@ -57,7 +57,7 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 	status, err := ts.analytics.CheckCorrectPerformance(InputPerformance)
 	if err != nil {
 		renderJSON(w, client_models.BadResponse{
-			Status:    err.Error(),
+			Status: err.Error(),
 		}, http.StatusBadRequest)
 		return
 	}
@@ -71,11 +71,11 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 }
 
 // Get students ... Get students by filter
-// @Summary Get students by filter 
+// @Summary Get students by filter
 // @Description Get students by filter
 // @Description Currently only supporting vk group id
-// @Tags Students 
-// @Param filter path string true "Filter" 
+// @Tags Students
+// @Param filter path string true "Filter"
 // @Success 200 {object} client_models.Response  Statisctic struct is {"NA": 0, "three": 0, "good": 0, "excellent": 0}
 // @Failure 400,500 {object} client_models.BadResponse
 // @Router /students/{filter} [get]
@@ -85,7 +85,7 @@ func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Requ
 	if err != nil {
 		log.Println(err)
 		renderJSON(w, client_models.BadResponse{
-			Status:     "Filter Not Supported",
+			Status: "Filter Not Supported",
 		}, http.StatusBadRequest)
 		return
 	}
@@ -101,8 +101,8 @@ func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Requ
 // App for running, initing server and router
 
 type App struct {
-	router *mux.Router
-	server *http.Server
+	router         *mux.Router
+	server         *http.Server
 	analyticsSever *AnalyticsServer
 }
 
@@ -112,14 +112,15 @@ type ServerConfig struct {
 
 func NewApp() *App {
 	// Initializing logger, and setting it up
-	file, err := os.OpenFile("logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		log.Fatalf("Error setting logs output file %v", err)
-	}
-	log.SetOutput(file)
+	//file, err := os.OpenFile("logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	//if err != nil {
+	//	log.Fatalf("Error setting logs output file %v", err)
+	//}
+	//log.SetOutput(file)
+	log.SetOutput(os.Stdout)
 
 	serverConfig := ServerConfig{}
-	err = envconfig.Process("", &serverConfig)
+	err := envconfig.Process("", &serverConfig)
 	if err != nil {
 		log.Fatalf("Error getting config data %v", err)
 	}
