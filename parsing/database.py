@@ -63,7 +63,7 @@ class Student(Base):
 
     # Relations
     marks = relationship("Marks", back_populates="student")
-    vkgroups = relationship("groupsstudents", back_populates="students")
+    vkgroups = relationship("GroupsStudents", back_populates="students")
 
     def __repr__(self):
         return f'{self.name} | {self.student_group} | {self.vk_link}'
@@ -114,7 +114,7 @@ class VKGroup(Base):
     category = Column(Text, nullable=True)
 
     # Relations
-    students = relationship("groupsstudents", back_populates="vkgroups")
+    students = relationship("GroupsStudents", back_populates="vkgroups")
 
 
 class GroupsStudents(Base):
