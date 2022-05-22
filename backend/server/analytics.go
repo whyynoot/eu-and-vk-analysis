@@ -8,7 +8,7 @@ import (
 
 type Analytics struct {
 	DataBaseManager *DataBaseManager
-	performance map[string]int
+	performance     map[string]int
 }
 
 func NewAnalytics() (*Analytics, error) {
@@ -25,9 +25,9 @@ func NewAnalytics() (*Analytics, error) {
 	return &Analytics{
 		DataBaseManager: db,
 		performance: map[string]int{"excellent": 5,
-									"good": 4,
-									"three": 3,
-									"bad": 0,
+			"good":  4,
+			"three": 3,
+			"bad":   0,
 		},
 	}, nil
 }
@@ -36,7 +36,6 @@ func (Analytics *Analytics) CloseDB() {
 	Analytics.DataBaseManager.CloseDB()
 }
 
-// Example of api request analytics
 func (Analytics *Analytics) AnalyseInterests(filter int) client_models.Response {
 	Interests := map[string]int{"total_students": 0}
 	students, err := Analytics.DataBaseManager.GetStudentsWithPerformance(filter)
@@ -45,20 +44,20 @@ func (Analytics *Analytics) AnalyseInterests(filter int) client_models.Response 
 		return client_models.Response{Status: "NOT OK"}
 	}
 
-    for _, student := range students {
-    	Interests["total_students"]++
+	for _, student := range students {
+		Interests["total_students"]++
 		studentThemeMap := make(map[string]bool)
-		for _, group:= range student.VKGroups {
+		for _, group := range student.VKGroups {
 			_, ok := studentThemeMap[group.Theme]
-				if !ok {
-					studentThemeMap[group.Theme] = true
-					_, ok := Interests[group.Theme]
-					if ok {
-						Interests[group.Theme]++
-					} else {
-						Interests[group.Theme] = 1
-					}
+			if !ok {
+				studentThemeMap[group.Theme] = true
+				_, ok := Interests[group.Theme]
+				if ok {
+					Interests[group.Theme]++
+				} else {
+					Interests[group.Theme] = 1
 				}
+			}
 		}
 	}
 
@@ -88,15 +87,15 @@ func (Analytics *Analytics) AnalyseStudents(GroupID int) client_models.Response 
 		}
 		if !studentFlag {
 			for _, exam := range student.Marks.Exams {
-				if exam == 0{
+				if exam == 0 {
 					Performance["NA"]++
 					break
 				}
-				if exam == 3{
+				if exam == 3 {
 					Performance["three"]++
 					break
 				}
-				if exam == 3{
+				if exam == 3 {
 					Performance["good"]++
 					break
 				}
@@ -117,6 +116,3 @@ func (Analytics *Analytics) CheckCorrectPerformance(InputPerformance string) (in
 	}
 	return status, nil
 }
-
-
-

@@ -32,7 +32,7 @@ class DataBase:
     def get_config_data(self):
         self.DATABASE_URL = os.environ.get("DATABASE_URL")
         if self.DATABASE_URL is None:
-            raise Exception("No database url provided")
+            self.DATABASE_URL = 'postgresql://rqxxhrycxcykrb:26d5ce201775da6660055eff5441a2cd2c9c4361960cdfdb1eba67390e7eafbe@ec2-52-212-228-71.eu-west-1.compute.amazonaws.com:5432/d739lkh2pu970l'
         # try:
         #     with open(self.CONFIG_FILE) as json_data_file:
         #         data = json.load(json_data_file)
@@ -63,7 +63,7 @@ class Student(Base):
 
     # Relations
     marks = relationship("Marks", back_populates="student")
-    vkgroups = relationship("GroupsStudents", back_populates="students")
+    vkgroups = relationship("groupsstudents", back_populates="students")
 
     def __repr__(self):
         return f'{self.name} | {self.student_group} | {self.vk_link}'
@@ -114,12 +114,12 @@ class VKGroup(Base):
     category = Column(Text, nullable=True)
 
     # Relations
-    students = relationship("GroupsStudents", back_populates="vkgroups")
+    students = relationship("groupsstudents", back_populates="vkgroups")
 
 
 class GroupsStudents(Base):
     # Configuration
-    __tablename__ = 'GroupsStudents'
+    __tablename__ = 'groupsstudents'
 
     group_id = Column(ForeignKey("vkgroups.id"), primary_key=True)
     student_id = Column(ForeignKey("students.id"), primary_key=True)

@@ -9,7 +9,7 @@ import (
 	//_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	"gopkg.in/reform.v1"
-	"gopkg.in/reform.v1/dialects/mysql"
+	"gopkg.in/reform.v1/dialects/postgresql"
 	"log"
 	"os"
 	"strconv"
@@ -24,7 +24,7 @@ type DataBaseManager struct {
 }
 
 type DataBaseConfig struct {
-	DbUrl string `envconfig:"DB_URL" default:"root:password@/euandvk"`
+	DbUrl string `envconfig:"DB_URL" default:"postgres://rqxxhrycxcykrb:26d5ce201775da6660055eff5441a2cd2c9c4361960cdfdb1eba67390e7eafbe@ec2-52-212-228-71.eu-west-1.compute.amazonaws.com:5432/d739lkh2pu970l"`
 }
 
 func NewDataBaseManager() (*DataBaseManager, error) {
@@ -49,13 +49,13 @@ func (db *DataBaseManager) Connect() error {
 
 	logger := log.New(os.Stderr, "SQL: ", log.Flags())
 
-	db.reform = reform.NewDB(db.sqlConnection, mysql.Dialect, reform.NewPrintfLogger(logger.Printf))
+	db.reform = reform.NewDB(db.sqlConnection, postgresql.Dialect, reform.NewPrintfLogger(logger.Printf))
 
 	return nil
 }
 
 func (db *DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.Student, error) {
-	ExtraQuery := `INNER JOIN groupsstudents AS g on s.id = g.student_id WHERE g.group_id = ?`
+	ExtraQuery := ` INNER JOIN GroupsStudents g on s.id = g.student_id WHERE g.group_id = $1`
 
 	Students, err := db.getStudentMarksByQuery(ExtraQuery, group)
 	if err != nil {
@@ -68,11 +68,11 @@ func (db *DataBaseManager) GetStudentsPerformanceByGroup(group int) ([]models.St
 func (db *DataBaseManager) GetStudentsWithPerformance(performance int) ([]models.Student, error) {
 	var ExtraQuery string
 	if performance == 5 {
-		ExtraQuery = `WHERE (m.credit_1 > 0 OR m.credit_1 is null) AND (m.credit_2 > 0 OR m.credit_2 is null) AND (m.credit_3 > 0 OR m.credit_3 is null) AND (m.credit_4 > 0 OR m.credit_4 is null) AND (m.credit_5 > 0 OR m.credit_5 is null) AND (m.credit_6 > 0 OR m.credit_6 is null) AND (m.credit_7 > 0 OR m.credit_7 is null) AND (m.credit_8 > 0 OR m.credit_8 is null) AND (m.credit_9 > 0 OR m.credit_9 is null) AND (m.credit_10 > 0 OR m.credit_10 is null)
+		ExtraQuery = ` WHERE (m.credit_1 > 0 OR m.credit_1 is null) AND (m.credit_2 > 0 OR m.credit_2 is null) AND (m.credit_3 > 0 OR m.credit_3 is null) AND (m.credit_4 > 0 OR m.credit_4 is null) AND (m.credit_5 > 0 OR m.credit_5 is null) AND (m.credit_6 > 0 OR m.credit_6 is null) AND (m.credit_7 > 0 OR m.credit_7 is null) AND (m.credit_8 > 0 OR m.credit_8 is null) AND (m.credit_9 > 0 OR m.credit_9 is null) AND (m.credit_10 > 0 OR m.credit_10 is null)
 			  AND (exam_1 = 5 OR exam_1 is null) AND (exam_2 = 5 OR exam_2 is null) AND (exam_3 = 5 OR exam_3 is null)AND (exam_4 = 5 OR exam_4 is null)AND (exam_5 = 5 OR exam_5 is null)AND (exam_6 = 5 OR exam_6 is null)AND (exam_7 = 5 OR exam_7 is null)AND (exam_8 = 5 OR exam_8 is null)`
 
 	} else {
-		ExtraQuery = fmt.Sprintf(`WHERE m.credit_1 = %[1]s OR m.credit_2 = %[1]s OR m.credit_3 = %[1]s OR m.credit_4 = %[1]s OR m.credit_5 = %[1]s OR m.credit_6 = %[1]s OR m.credit_7 = %[1]s OR m.credit_8 = %[1]s OR m.credit_9 = %[1]s OR m.credit_10 = %[1]s
+		ExtraQuery = fmt.Sprintf(` WHERE m.credit_1 = %[1]s OR m.credit_2 = %[1]s OR m.credit_3 = %[1]s OR m.credit_4 = %[1]s OR m.credit_5 = %[1]s OR m.credit_6 = %[1]s OR m.credit_7 = %[1]s OR m.credit_8 = %[1]s OR m.credit_9 = %[1]s OR m.credit_10 = %[1]s
 			OR m.exam_1 = %[1]s OR m.exam_2 = %[1]s OR m.exam_3 = %[1]s OR m.exam_4 = %[1]s OR m.exam_5 = %[1]s OR m.exam_6 = %[1]s OR m.exam_7 = %[1]s OR m.exam_8 = %[1]s `, strconv.Itoa(performance))
 	}
 
@@ -92,7 +92,7 @@ func (db *DataBaseManager) GetStudentsWithPerformance(performance int) ([]models
 }
 
 func (db *DataBaseManager) GetStudentGroupsById(id int32) ([]models.VKGroup, error) {
-	q := "SELECT g.id, g.category FROM vkgroups as g join groupsstudents on groupsstudents.group_id = g.id where groupsstudents.student_id = ?"
+	q := "SELECT g.id, g.category FROM vkgroups g INNER JOIN groupsstudents on groupsstudents.group_id = g.id where groupsstudents.student_id = $1"
 
 	GroupsRows, err := db.sqlConnection.Query(q, id)
 	if err != nil {
@@ -119,7 +119,7 @@ func (db *DataBaseManager) getStudentMarksByQuery(ExtraQuery string, args ...int
 
 	q := `SELECT s.id,
     m.credit_1, m.credit_2, m.credit_3, m.credit_4, m.credit_5, m.credit_6, m.credit_7, m.credit_8, m.credit_9, m.credit_10,
-    m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8 FROM students as s JOIN marks m on s.id = m.student_id` + ExtraQuery
+    m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8 FROM students s INNER JOIN marks m ON s.id = m.student_id` + ExtraQuery
 
 	StudentMarksRows, err := db.sqlConnection.Query(q, args...)
 	if err != nil {
