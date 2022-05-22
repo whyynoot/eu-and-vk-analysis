@@ -110,8 +110,8 @@
             .then(resp => resp.json())
             .then(function(data) {
                 if (data.status=="OK"){
-                    var labels;
-                    var data_chart;
+                    var labels = [];
+                    var data_chart = [];
                     for(var i in data.statistics) {
                         labels.push(i);
                         data_chart.push(data.statistics[i]);
