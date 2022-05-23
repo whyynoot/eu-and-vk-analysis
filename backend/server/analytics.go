@@ -95,7 +95,7 @@ func (Analytics *Analytics) AnalyseStudents(GroupID int) client_models.Response 
 					Performance["three"]++
 					break
 				}
-				if exam == 3 {
+				if exam == 4 {
 					Performance["good"]++
 					break
 				}
