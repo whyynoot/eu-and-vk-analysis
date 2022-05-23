@@ -5,7 +5,7 @@
         "contact": {},
         "version": "1.0.0"
     },
-    "host": "localhost:8000",
+    "host": "euandvkanalysis.herokuapp.com",
     "basePath": "/",
     "paths": {
         "/interests/{filter}": {
@@ -40,19 +40,19 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     }
                 }
             }
         },
-        "/studnets/{filter}": {
+        "/students/{filter}": {
             "get": {
                 "description": "Get students by filter\nCurrently only supporting vk group id",
                 "tags": [
@@ -70,7 +70,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
@@ -78,13 +78,13 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     }
                 }
@@ -92,6 +92,15 @@
         }
     },
     "definitions": {
+        "client_models.BadResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "NOT OK"
+                }
+            }
+        },
         "client_models.Response": {
             "type": "object",
             "properties": {
@@ -104,8 +113,7 @@
                 "status": {
                     "type": "string",
                     "enum": [
-                        "OK",
-                        " NOT OK"
+                        "OK"
                     ]
                 }
             }

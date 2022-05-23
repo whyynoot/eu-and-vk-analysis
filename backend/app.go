@@ -4,15 +4,15 @@ import (
 	"encoding/json"
 	"eu-and-vk-analysis/backend/client_models"
 	"eu-and-vk-analysis/backend/server"
+	_ "eu-and-vk-analysis/docs"
 	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
-	"github.com/swaggo/http-swagger"
-	_ "eu-and-vk-analysis/docs"
 )
 
 // Server for router, and server handlers
@@ -29,7 +29,7 @@ func NewAnalyticsServer() (*AnalyticsServer, error) {
 	return &AnalyticsServer{analytics: analytics}, nil
 }
 
-func (ts* AnalyticsServer) closeDB() {
+func (ts *AnalyticsServer) closeDB() {
 	ts.analytics.CloseDB()
 }
 
@@ -40,6 +40,8 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 		return
 	}
 	w.WriteHeader(code)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(js)
 }
@@ -49,62 +51,60 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 // @Description Get interests by performance
 // @Tags Interests
 // @Param filter path string true "Filter" Enums(bad, good, excellent, three)
-// @Success 200 {object} client_models.Response  Statistics struct key is GROUP_NAME and value is people count in GROUP_NAME
-// @Failure 400,500 {object} client_models.Response  
+// @Success 200 {object} client_models.Response
+// @Failure 400,500 {object} client_models.BadResponse
 // @Router /interests/{filter} [get]
 func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Request) {
 	InputPerformance := mux.Vars(req)["filter"]
-	status := ts.analytics.CheckCorrectPerformance(InputPerformance)
-	if status == -1 {
-		renderJSON(w, client_models.Response{
-			Statistics: nil,
-			Status:     "Filter Not Supported",
+	status, err := ts.analytics.CheckCorrectPerformance(InputPerformance)
+	if err != nil {
+		renderJSON(w, client_models.BadResponse{
+			Status: err.Error(),
 		}, http.StatusBadRequest)
 		return
 	}
 
 	response := ts.analytics.AnalyseInterests(status)
 	if response.Status != "OK" {
-		renderJSON(w, response, http.StatusInternalServerError)
+		renderJSON(w, client_models.BadResponse{Status: response.Status}, http.StatusInternalServerError)
 	} else {
 		renderJSON(w, response, http.StatusOK)
 	}
 }
 
 // Get students ... Get students by filter
-// @Summary Get students by filter 
+// @Summary Get students by filter
 // @Description Get students by filter
 // @Description Currently only supporting vk group id
-// @Tags Students 
-// @Param filter path string true "Filter" 
-// @Success 200 {object} client_models.Response  Statisctic struct is {"NA": 0, "three": 0, "good": 0, "excellent": 0}
-// @Failure 400,500 {object} client_models.Response
-// @Router /studnets/{filter} [get]
+// @Tags Students
+// @Param filter path string true "Filter"
+// @Success 200 {object} client_models.Response
+// @Failure 400,500 {object} client_models.BadResponse
+// @Router /students/{filter} [get]
 func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Request) {
 	InputGroupId := mux.Vars(req)["filter"]
 	GroupId, err := strconv.Atoi(InputGroupId)
 	if err != nil {
-		renderJSON(w, client_models.Response{
-			Statistics: nil,
-			Status:     "Filter Not Supported",
+		log.Println(err)
+		renderJSON(w, client_models.BadResponse{
+			Status: "Filter Not Supported",
 		}, http.StatusBadRequest)
 		return
 	}
 
 	response := ts.analytics.AnalyseStudents(GroupId)
 	if response.Status != "OK" {
-		renderJSON(w, response, http.StatusInternalServerError)
+		renderJSON(w, client_models.BadResponse{Status: response.Status}, http.StatusInternalServerError)
 	} else {
 		renderJSON(w, response, http.StatusOK)
 	}
 }
 
-
 // App for running, initing server and router
 
 type App struct {
-	router *mux.Router
-	server *http.Server
+	router         *mux.Router
+	server         *http.Server
 	analyticsSever *AnalyticsServer
 }
 
@@ -114,14 +114,15 @@ type ServerConfig struct {
 
 func NewApp() *App {
 	// Initializing logger, and setting it up
-	file, err := os.OpenFile("logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
-	if err != nil {
-		log.Fatalf("Error setting logs output file %v", err)
-	}
-	log.SetOutput(file)
+	//file, err := os.OpenFile("logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	//if err != nil {
+	//	log.Fatalf("Error setting logs output file %v", err)
+	//}
+	//log.SetOutput(file)
+	log.SetOutput(os.Stdout)
 
 	serverConfig := ServerConfig{}
-	err = envconfig.Process("", &serverConfig)
+	err := envconfig.Process("", &serverConfig)
 	if err != nil {
 		log.Fatalf("Error getting config data %v", err)
 	}
@@ -140,6 +141,9 @@ func NewApp() *App {
 	app.router.HandleFunc("/students/{filter}", app.analyticsSever.studentsHandler).Methods("GET")
 
 	app.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	app.router.PathPrefix("/js/").Handler(http.FileServer(http.Dir("./frontend/")))
+    app.router.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./frontend/")))
+	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/html/")))
 
 	app.NewServer(serverConfig.Port)
 

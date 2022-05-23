@@ -89,7 +89,7 @@ class EUParser:
             self.login()
         print("Start parsing...")
         try:
-            response = self.session.get('https://eu.bmstu.ru/modules/session/', proxies=self.proxy)
+            response = self.session.get('https://eu.bmstu.ru/modules/session/?session_id=32', proxies=self.proxy)
             response.encoding = 'utf-8'
         except Exception as e:
             raise Exception("Unable to parse groups", e)
@@ -97,15 +97,15 @@ class EUParser:
         if response.status_code == 200:
             html = BeautifulSoup(response.text, features='lxml')
 
-            groups = html.find_all("a", {'name': 'sdlk'})
-            # REMOVE TEST GROUP
-            #groups = ['modules/session/group/201a4dfa-8610-11ea-8d72-005056960017/']
+            #groups = html.find_all("a", {'name': 'sdlk'})
+            #REMOVE TEST GROUP
+            groups = ['modules/session/group/201a4dfa-8610-11ea-8d72-005056960017/']
 
             print(f"Total groups found {len(groups)}")
 
             for group in groups:
                 try:
-                    self.parse_students(group['href'])
+                    self.parse_students(group)
                 except Exception as e:
                     print(f"Error with {group.text}", e)
                     pass
@@ -118,6 +118,7 @@ class EUParser:
         try:
             response = self.session.get(f'https://eu.bmstu.ru/{group_link}', proxies=self.proxy)
             response.encoding = 'utf-8'
+            #print(response.text)
             if response.status_code == 200:
                 html = BeautifulSoup(response.text, features='lxml')
                 table = iter(html.find('table').find_all('tr'))
@@ -154,15 +155,14 @@ class EUParser:
     @staticmethod
     def convert_marks(marks, students):
         db_marks = []
-        for student in students:
-            db_mark = Marks(student_id=student.id)
-            for mark in marks:
-                (credit, exam) = mark
-                for i in range(1, len(credit) + 1):
-                    setattr(db_mark, f"credit_{i}", credit[i - 1])
-                for i in range(1, len(exam) + 1):
-                    setattr(db_mark, f"exam_{i}", credit[i - 1])
-                db_marks.append(db_mark)
+        for i in range(len(students)):
+            db_mark = Marks(student_id=students[i].id)
+            (credit, exam) = marks[i]
+            for i in range(1, len(credit) + 1):
+                setattr(db_mark, f"credit_{i}", credit[i - 1])
+            for i in range(1, len(exam) + 1):
+                setattr(db_mark, f"exam_{i}", exam[i - 1])
+            db_marks.append(db_mark)
         return db_marks
 
     @staticmethod

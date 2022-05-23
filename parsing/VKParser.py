@@ -54,8 +54,9 @@ class VKParser:
         students = self.db_session.query(Student).filter(Student.vk_link is not None).all()
 
         for student in students:
-            self.save_student_groups(student)
-            self.db_session.commit()
+            if student.vk_link is not None:
+                self.save_student_groups(student)
+                self.db_session.commit()
 
     def save_student_groups(self, student):
         counter = 0

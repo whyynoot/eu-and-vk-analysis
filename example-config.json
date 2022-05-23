@@ -6,10 +6,5 @@
   "vk": {
     "access_token": "",
     "groupsids": []
-  },
-  "mysql": {
-    "user": "",
-    "password": "",
-    "server": ""
   }
 }

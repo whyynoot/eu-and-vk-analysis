@@ -6,7 +6,7 @@ import (
 
 // @title EU and VK Analytics API documentation
 // @version 1.0.0
-// @host localhost:8000
+// @host euandvkanalysis.herokuapp.com
 // @BasePath /
 
 func main() {

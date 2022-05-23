@@ -48,19 +48,19 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     }
                 }
             }
         },
-        "/studnets/{filter}": {
+        "/students/{filter}": {
             "get": {
                 "description": "Get students by filter\nCurrently only supporting vk group id",
                 "tags": [
@@ -78,7 +78,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "NA\": 0, \"three\": 0, \"good\": 0, \"excellent\": 0}",
+                        "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/client_models.Response"
                         }
@@ -86,13 +86,13 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/client_models.BadResponse"
                         }
                     }
                 }
@@ -100,6 +100,15 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "client_models.BadResponse": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "NOT OK"
+                }
+            }
+        },
         "client_models.Response": {
             "type": "object",
             "properties": {
@@ -112,8 +121,7 @@ const docTemplate = `{
                 "status": {
                     "type": "string",
                     "enum": [
-                        "OK",
-                        " NOT OK"
+                        "OK"
                     ]
                 }
             }
@@ -124,7 +132,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "localhost:8000",
+	Host:             "euandvkanalysis.herokuapp.com",
 	BasePath:         "/",
 	Schemes:          []string{},
 	Title:            "EU and VK Analytics API documentation",
