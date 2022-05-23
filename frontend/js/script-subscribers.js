@@ -8,11 +8,13 @@
             if (data.status=="OK"){
 
                var data_chart=[];
+                var labels=[];
                 var sum=0;
                 for(var i in data.statistics) {
-                        data_chart.push(data.statistics[i]);
+                    data_chart.push(data.statistics[i]);
                     sum+=data.statistics[i];
-                    }
+    
+                }
                 
                 var data_percent=[];
                 for(var i in data.statistics) {
