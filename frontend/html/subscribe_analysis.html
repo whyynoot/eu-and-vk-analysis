@@ -3,345 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Аналитика успеваемости подписчиков сообщества</title>
-    <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/style.css">
 
 </head>
 <body>
 <header>
-    <div class="header">
+       <div class="header"> 
         <a href="index.html"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243939.png?w=740"  alt="back-icon"> </a>
-        <h2>Анализ успеваемости подписчиков сообщества ВКонтакте</h2>
-        <img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon">
-    </div>
+       <h2>Анализ успеваемости подписчиков сообщества ВКонтакте</h2>
+       <img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon"> 
+       </div>   
+      
 
+      <div class="menu-dropdown">
 
-    <div class="menu-dropdown">
-
-        <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon" >  </a>
-        <div class="menu">
-            <h2>МЕНЮ</h2>
-            <a href="index.html">Главная страница
+           <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/1243/1243926.png?w=740"  alt="menu-icon" >  </a>
+         <div class="menu">
+               <h2>МЕНЮ</h2>
+                <a href="index.html">Главная страница
             </a><br>
-            <a href="student_analysis.html">Аналитика интересов по&nbsp;успеваемости
+                <a href="student_analysis.html">Аналитика интересов по&nbsp;успеваемости
             </a><br>
-            <a href="subscribe_analysis.html">Аналитика успеваемости подписчиков сообщества
-            </a><br>
-            <a href="documentation.html">Документация проекта
-            </a>
-        </div>
-    </div>
-
-</header>
-
-
-<main>
-
-    <div class=choice-back style="height: auto;">
-        Введите ID сообщества ВКонтакте: <br>
-        <input type="text" id='groupID-input' placeholder="Введите текст... " >
-        <a href="#result-sub"><button style="min-width: 10px" id='enter-btn'>Ввод</button></a>
-        <br>
-    </div>
-
-
-
-    <a name="result-sub"></a>
-
-    <br>
-    <br>
-    <br>
-
-    <div class=result-back style="height: auto;">
-        Результаты анализа:  <br>
-
-        <canvas id="myChart"  ></canvas>
-        <canvas id="myChart1" height="100"  ></canvas>
-        <br>
-        <canvas id="bar-chart-student"  ></canvas>
-        <canvas id="sector-chart-categories"  ></canvas>
-
-
-        <br> <br>
-        <a href="..." >Скачать результаты</a>
-    </div>
-
-
-    <br>
-
-
-</main>
-
-<footer>
-    &copy;  МГТУ им.Баумана, 2022
-</footer>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-<script>
-    /*   // Vertical bar chart
-              var ctx = document.getElementById('myChart').getContext('2d');
-              var myChart = new Chart(ctx, {
-                  type: 'bar',
-                  data: {
-                      labels: ['Hong Kong', 'Macau', 'Japan', 'Switzerland', 'Spain', 'Singapore'],
-                      datasets: [{
-                          label: 'Life expectancy',
-                          data: [84.308, 84.188, 84.118, 83.706, 83.5, 83.468],
-                          backgroundColor: [
-                              'rgba(216, 27, 96, 0.6)',
-                              'rgba(3, 169, 244, 0.6)',
-                              'rgba(255, 152, 0, 0.6)',
-                              'rgba(29, 233, 182, 0.6)',
-                              'rgba(156, 39, 176, 0.6)',
-                              'rgba(84, 110, 122, 0.6)'
-                          ],
-                          borderColor: [
-                              'rgba(216, 27, 96, 1)',
-                              'rgba(3, 169, 244, 1)',
-                              'rgba(255, 152, 0, 1)',
-                              'rgba(29, 233, 182, 1)',
-                              'rgba(156, 39, 176, 1)',
-                              'rgba(84, 110, 122, 1)'
-                          ],
-                          borderWidth: 1
-                      }]
-                  },
-                  options: {
-                      legend: {
-                          display: false
-                      },
-                      title: {
-                          display: true,
-                          text: 'Life Expectancy by Country',
-                          position: 'top',
-                          fontSize: 16,
-                          padding: 20
-                      },
-                      scales: {
-                          yAxes: [{
-                              ticks: {
-                                  min: 75
-                              }
-                          }]
-                      }
-                  }
-              });
-
-       // Doughnut chart
-  var ctx = document.getElementById('myChart1').getContext('2d');
-  var myChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-          labels: ['Dairy', 'Fruits', 'Lean meats', 'Vegetables', 'Whole grains'],
-          datasets: [{
-              data: [27.92, 17.53, 14.94, 26.62, 12.99],
-              backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5', '#ffd600'],
-              borderWidth: 0.5 ,
-              borderColor: '#ddd'
-          }]
-      },
-      options: {
-          title: {
-              display: true,
-              text: 'Recommended Daily Diet',
-              position: 'top',
-              fontSize: 16,
-              fontColor: '#111',
-              padding: 20
-          },
-          legend: {
-              display: true,
-              position: 'bottom',
-              labels: {
-                  boxWidth: 20,
-                  fontColor: '#111',
-                  padding: 15
-              }
-          },
-          tooltips: {
-              enabled: false
-          },
-          plugins: {
-              datalabels: {
-                  color: '#111',
-                  textAlign: 'center',
-                  font: {
-                      lineHeight: 1.6
-                  },
-                  formatter: function(value, ctx) {
-                      return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value + '%';
-                  }
-              }
-          }
-      }
-  });
-  */
-</script>
-
-<script>
-
-    var btn=document.querySelector('#enter-btn');
-    var url = 'https://euandvkanalysis.herokuapp.com/students/' + document.getElementById('groupID-input').value;
-
-    btn.addEventListener('click', event=>{
-        fetch(url, {
-            method: 'GET'
-        }).then(resp => resp.json()).then(function(data) {
-            if (data.status=="OK"){
-
-                var labels = data.statistics;
-                var dataChart = data.statistics;
-
-                // Vertical bar chart
-                var ctx = document.getElementById('bar-chart-student').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Отличники', 'Хорошисты', 'Троечники', 'Неуспевающие'],
-                        datasets: [{
-                            label: 'Количество подписчиков',
-                            data: dataChart,
-                            backgroundColor: [
-                                'rgba(216, 27, 96, 0.6)',
-                                'rgba(3, 169, 244, 0.6)',
-                                'rgba(255, 152, 0, 0.6)',
-                                'rgba(29, 233, 182, 0.6)',
-
-                            ],
-                            borderColor: [
-                                'rgba(216, 27, 96, 1)',
-                                'rgba(3, 169, 244, 1)',
-                                'rgba(255, 152, 0, 1)',
-                                'rgba(29, 233, 182, 1)',
-
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Количество подписчиков по категориям успеваемости студентов',
-                            position: 'top',
-                            fontSize: 16,
-                            padding: 20
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    min: 75
-                                }
-                            }]
-                        }
-                    }
-                });
-
-                // Doughnut chart
-                var ctx = document.getElementById('sector-chart-categories').getContext('2d');
-                var myChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Отличники', 'Хорошисты', 'Троечники', 'Неуспевающие'],
-                        datasets: [{
-                            data: [data[0]/resp.total, data[1]/resp.total, data[2]/resp.total, data[3]/resp.total],
-                            backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5'],
-                            borderWidth: 0.5 ,
-                            borderColor: '#ddd'
-                        }]
-                    },
-                    options: {
-                        title: {
-                            display: true,
-                            text: 'Процентное соотношение подписчиков по категориям успеваемости студентов',
-                            position: 'top',
-                            fontSize: 16,
-                            fontColor: '#111',
-                            padding: 20
-                        },
-                        legend: {
-                            display: true,
-                            position: 'bottom',
-                            labels: {
-                                boxWidth: 20,
-                                fontColor: '#111',
-                                padding: 15
-                            }
-                        },
-                        tooltips: {
-                            enabled: false
-                        },
-                        plugins: {
-                            datalabels: {
-                                color: '#111',
-                                textAlign: 'center',
-                                font: {
-                                    lineHeight: 1.6
-                                },
-                                formatter: function(value, ctx) {
-                                    return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value + '%';
-                                }
-                            }
-                        }
-                    }
-                });
-
-
-            }
-
-        }).catch(function(error) {console.log(error);});
-    }
-    )
-
-</script>
-
-
-
-</body>
-</html>                </a>
+                <a href="subscribe_analysis.html">Аналитика успеваемости подписчиков сообщества
+                    </a><br>
+                <a href="/swagger/" target="_blank">Документация проекта
+                   </a>
             </div>
         </div>
 
 </header>
 
+
 <main>
  
      <div class=choice-back style="height: auto;">
-         Введите ссылку на сообщество ВКонтакте: <br>
-         <input type="text" placeholder="Введите текст... " >
-         <button style="min-width: 10px">Ввод</button>
+         Введите ID сообщества ВКонтакте: <br>
+         <input type="text" id='groupID-input' placeholder="Введите текст... " >
+         <a href="#result-sub"><button style="min-width: 10px" id='enter-btn'>Ввод</button></a>
          <br>
      </div>
+     
+     <div> <p><b>ID некоторых групп:</b> <br> <br>
+     
+     109863468 - "Цитаты преподавателей МГТУ им. Н.Э. Баумана"; <br>
+     59336460 - "Подслушано МГТУ им. Баумана"; <br>
+     143031608 - "научные мемы";<br>
+     159146575 - "Мемуары ценителей научных мемов";<br> 
+     103133619 - "BAUMAN MEMES"; <br>
+     30666517 - "Типичный программист"; <br>
+     147845620 - "VK Музыка"; <br>
+     190939167 - "Центр карьеры МГТУ им. Н.Э. Баумана";<br>
+     113929722 - "Кафедра ФВ МГТУ им. Н. Э. Баумана". <br> 
+     </p></div>
+     
+
+     
+     <a name="result-sub"></a>
 
      <br>
      <br>
      <br>
 
-      <div class=result-back style="height: auto;">
+      <div  class=result-back style="height: auto;">
     Результаты анализа:  <br>
 
-      <img src="/images/bar-diagram.png"  alt="bar-diagram">
-       <img src="/images/sector-diagram.png"  alt="sector-diagram"> 
+     
+        <canvas id="bar-chart-student"  ></canvas>
+        <canvas id="sector-chart-categories"  ></canvas>
+<div id="result-error">  </div>
+             
+        <br> <br>
      </div>
 
 
+<br>
+  
 
-      <h4>Выводы:</h4>
-
-    <ul>
-      <li>Количество проанализированных студентов:</li>
-      <li>Превалирующая категория студентов:</li>
-
-    </ul>
-
-    <button class="menu-button" style="left: 10%;  bottom: 5px;     position: relative;">Скачать результаты</button>
 </main>
 
-<footer>
-    
+ <footer>
+    &copy;  МГТУ им.Баумана, 2022
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+ 
+<script src="../js/script-subscribers.js">            
+ 
+</script>
  
 
 

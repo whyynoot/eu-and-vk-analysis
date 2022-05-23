@@ -141,8 +141,8 @@ func NewApp() *App {
 	app.router.HandleFunc("/students/{filter}", app.analyticsSever.studentsHandler).Methods("GET")
 
 	app.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
-	app.router.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./frontend/")))
-	app.router.PathPrefix("/images/").Handler(http.FileServer(http.Dir("./frontend/")))
+	app.router.PathPrefix("/js/").Handler(http.FileServer(http.Dir("./frontend/")))
+    app.router.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./frontend/")))
 	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/html/")))
 
 	app.NewServer(serverConfig.Port)

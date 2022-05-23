@@ -15,7 +15,7 @@ body {
     background: var(--color-bg);
     font-family: 'Inter', 'Trebuchet MS', sans-serif;
     margin-top: 110px;
-    margin-left: 100px;
+    margin-left: 80px;
 
 }
 
@@ -24,7 +24,7 @@ body {
 }
 
 main{
-    max-width: 1000px;
+    max-width: 1500px;
     margin-left: 80px;
 }
 p{
@@ -139,12 +139,12 @@ img[alt="back-icon"]{
     background: var(--color-bg-block);
     border-radius: 25px;
     text-align: center;
-    padding-top: 20px;
+    padding: 20px;
     font-size: 1em;
     font-weight: 550;
-
-
 }
+
+
 
 .choice-back button{
     width: 30%;
@@ -167,10 +167,7 @@ img[alt="back-icon"]{
 }
 
 
-.result-back img{
-    width: 200px;
-    margin: 20px
-}
+
 
 .choice-back input{
     width: 80%;

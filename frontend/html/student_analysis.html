@@ -27,7 +27,7 @@
             </a><br>
             <a href="subscribe_analysis.html">Аналитика успеваемости подписчиков сообщества
             </a><br>
-            <a href="documentation.html">Документация проекта
+            <a href="/swagger/" target="_blank">Документация проекта
             </a>
         </div>
     </div>
@@ -35,6 +35,18 @@
 </header>
 
 <main>
+    <style> 
+        #result-student-analyse {
+            width: 90%;
+            margin: 0;
+        }
+        #bar-chart-categories{
+            width: 70%;
+
+        }
+        
+    </style>
+
 
     <div id="choice-stud" class=choice-back style="height: auto;">
         Выберите категорию студентов для анализа: <br>
@@ -56,20 +68,13 @@
     <br>
     <br>
 
-    <div class=result-back style="height: auto;">
+    <div class=result-back id='result-student-analyse' style="height: auto;">
         Результаты анализа:  <br>
 
-        <canvas id="myChart"  ></canvas>
         <canvas id="bar-chart-categories"  ></canvas>
-        <canvas id="sector-chart-categories"  ></canvas>
+        <div id="result-error-stud">  </div>
 
-
-
-
-
-        <br> <br>
-
-        <a href="..." >Скачать результаты</a>
+<br>
 
     </div>
 
@@ -84,77 +89,11 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-<script>
-
-
-    var choiceBtn=document.querySelector('#choice-stud');
-    var url;
-
-    choiceBtn.addEventListener('click', event=>{
-        if ((event.target.name==='bad')||(event.target.name==='three')||(event.target.name==='good')||(event.target.name==='excellent')){
-            switch (event.target.name){
-                case 'excellent':
-                    url='https://euandvkanalysis.herokuapp.com/interests/excellent';
-                    break;
-                case 'good':
-                    url='https://euandvkanalysis.herokuapp.com/interests/good';
-                    break;
-                case 'three':
-                    url='https://euandvkanalysis.herokuapp.com/interests/three';
-                    break;
-                case 'bad':
-                    url='https://euandvkanalysis.herokuapp.com/interests/bad';
-                    break;
-            }}
-        fetch(url, {method: 'GET', mode: 'no-cors'})
-            .then(resp => resp.json())
-            .then(function(data) {
-                if (data.status=="OK"){
-                    var labels = [];
-                    var data_chart = [];
-                    for(var i in data.statistics) {
-                        labels.push(i);
-                        data_chart.push(data.statistics[i]);
-                    }
-
-                    //  объект resp с которым надо работать
-                    // и тут ты ренедеришь собственно саму диаграму
-
-                    // Vertical bar chart
-                    var ctx = document.getElementById('bar-chart-categories').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Количество подписчиков',
-                                data: data_chart
-                            }]
-                        },
-                        options: {
-                            legend: {
-                                display: false
-                            },
-                            title: {
-                                display: true,
-                                text: 'Количество подписчиков по категориям сообществ',
-                                position: 'top',
-                                fontSize: 16,
-                                padding: 20
-                            },
-                        }
-                    })
-                }
-            }).catch(function(error) {
-                console.log(error);
-            }
-        )})
+<script src='../js/script-students.js' >
 
 </script>
 
-<footer>
-    Copyright
-</footer>
+
 
 
 </body>
