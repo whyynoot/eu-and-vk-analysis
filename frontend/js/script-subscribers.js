@@ -4,7 +4,17 @@
        var url = '/students/' + document.getElementById('groupID-input').value;
        fetch(url, {
             method: 'GET'
-        }).then(resp => resp.json()).then(function(data) {
+        })
+        .then((res) => {
+            if (res.status >= 200 && res.status < 300) {
+                return res;
+            } else {
+                let error = new Error(res.statusText);
+                error.response = res;
+                throw error
+            }
+        })
+           .then(resp => resp.json()).then(function(data) {
             if (data.status=="OK"){
 
                var data_chart=[];
@@ -115,5 +125,8 @@
                
                 }
            
-                    }).catch(function(error) {console.log(error);});
-       })
+                    }).catch(function(error) {
+                            console.log(error); 
+                            document.getElementById("result-error").innerHTML = error.message;
+                        });
+    })
