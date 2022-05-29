@@ -70,7 +70,6 @@ func (db *DataBaseManager) GetStudentsWithPerformance(performance int) ([]models
 	if performance == 5 {
 		ExtraQuery = ` WHERE (m.credit_1 > 0 OR m.credit_1 is null) AND (m.credit_2 > 0 OR m.credit_2 is null) AND (m.credit_3 > 0 OR m.credit_3 is null) AND (m.credit_4 > 0 OR m.credit_4 is null) AND (m.credit_5 > 0 OR m.credit_5 is null) AND (m.credit_6 > 0 OR m.credit_6 is null) AND (m.credit_7 > 0 OR m.credit_7 is null) AND (m.credit_8 > 0 OR m.credit_8 is null) AND (m.credit_9 > 0 OR m.credit_9 is null) AND (m.credit_10 > 0 OR m.credit_10 is null)
 			  AND (exam_1 = 5 OR exam_1 is null) AND (exam_2 = 5 OR exam_2 is null) AND (exam_3 = 5 OR exam_3 is null)AND (exam_4 = 5 OR exam_4 is null)AND (exam_5 = 5 OR exam_5 is null)AND (exam_6 = 5 OR exam_6 is null)AND (exam_7 = 5 OR exam_7 is null)AND (exam_8 = 5 OR exam_8 is null)`
-
 	} else {
 		ExtraQuery = fmt.Sprintf(` WHERE m.credit_1 = %[1]s OR m.credit_2 = %[1]s OR m.credit_3 = %[1]s OR m.credit_4 = %[1]s OR m.credit_5 = %[1]s OR m.credit_6 = %[1]s OR m.credit_7 = %[1]s OR m.credit_8 = %[1]s OR m.credit_9 = %[1]s OR m.credit_10 = %[1]s
 			OR m.exam_1 = %[1]s OR m.exam_2 = %[1]s OR m.exam_3 = %[1]s OR m.exam_4 = %[1]s OR m.exam_5 = %[1]s OR m.exam_6 = %[1]s OR m.exam_7 = %[1]s OR m.exam_8 = %[1]s `, strconv.Itoa(performance))
