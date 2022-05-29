@@ -204,7 +204,6 @@ img[alt="back-icon"]{
     display: block;
 }
 
-@media screen and (min-width:1440px)
-{
-    body {margin-left: 200px; }
+footer{
+    bottom: 0;
 }
