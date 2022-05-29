@@ -105,9 +105,13 @@ class EUParser:
             print(f"Total groups found {len(groups)}")
 
             for group in groups:
-                if ('СГН' in group.text) or ('Л' in group.text):
+                if ('СГН' in group.text):
                     try:
-                        self.parse_students(group)
+                        # REAL
+                        print("Parsing " + group.text)
+                        self.parse_students(group['href'])
+                        # TEST
+                        # self.parse_students(group)
                     except Exception as e:
                         print(f"Error with {group.text}", e)
                         pass
@@ -170,7 +174,7 @@ class EUParser:
     @staticmethod
     def convert_exams(exams):
         for i in range(len(exams)):
-            if exams[i] == 'НА' or exams[i] == 'Я':
+            if exams[i] == 'НА' or exams[i] == 'Я' or exams[i] == 'Неуд':
                 exams[i] = 0
             if exams[i] == 'Удов':
                 exams[i] = 3
@@ -178,13 +182,17 @@ class EUParser:
                 exams[i] = 4
             if exams[i] == 'Отл':
                 exams[i] = 5
+            else:
+                exams[i] = 0
         return exams
 
     @staticmethod
     def convert_credits(student_credit):
         for i in range(len(student_credit)):
-            if student_credit[i] == 'НА' or student_credit[i] == 'Я' or student_credit[i] == 'Нзч':
+            if student_credit[i] == 'НА' or student_credit[i] == 'Я' or student_credit[i] == 'Нзч' or student_credit[i] == 'Неуд':
                 student_credit[i] = 0
             if student_credit[i] == 'Зчт':
                 student_credit[i] = 1
+            else:
+                student_credit[i] = 0
         return student_credit

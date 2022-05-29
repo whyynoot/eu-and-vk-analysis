@@ -143,9 +143,6 @@ func NewApp() *App {
 	app.router.PathPrefix("/js/").Handler(http.FileServer(http.Dir("./frontend/")))
 	app.router.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./frontend/")))
 	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/html/")))
-	app.router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, "./frontend/html/404page.html")
-	})
 
 	return app
 }

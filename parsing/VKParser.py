@@ -1,3 +1,4 @@
+import time
 import vk
 from vk import exceptions
 import json
@@ -57,6 +58,7 @@ class VKParser:
             if student.vk_link is not None:
                 self.save_student_groups(student)
                 self.db_session.commit()
+                time.sleep(5)
 
     def save_student_groups(self, student):
         counter = 0
