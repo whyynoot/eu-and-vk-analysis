@@ -176,11 +176,11 @@ class EUParser:
         for i in range(len(exams)):
             if exams[i] == 'НА' or exams[i] == 'Я' or exams[i] == 'Неуд':
                 exams[i] = 0
-            if exams[i] == 'Удов':
+            elif exams[i] == 'Удов':
                 exams[i] = 3
-            if exams[i] == 'Хор':
+            elif exams[i] == 'Хор':
                 exams[i] = 4
-            if exams[i] == 'Отл':
+            elif exams[i] == 'Отл':
                 exams[i] = 5
             else:
                 exams[i] = 0
@@ -191,7 +191,7 @@ class EUParser:
         for i in range(len(student_credit)):
             if student_credit[i] == 'НА' or student_credit[i] == 'Я' or student_credit[i] == 'Нзч' or student_credit[i] == 'Неуд':
                 student_credit[i] = 0
-            if student_credit[i] == 'Зчт':
+            elif student_credit[i] == 'Зчт':
                 student_credit[i] = 1
             else:
                 student_credit[i] = 0
