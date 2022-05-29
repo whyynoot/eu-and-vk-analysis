@@ -2,6 +2,13 @@
              
     btn.addEventListener('click', event=>{
        var url = '/students/' + document.getElementById('groupID-input').value;
+         var canvas=document.getElementById('bar-chart-student');
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height); 
+        canvas=document.getElementById('sector-chart-categories');
+        ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
        fetch(url, {
             method: 'GET'
         })
@@ -100,9 +107,9 @@
                         var myChart = new Chart(ctx, {
                             type: 'pie',
                             data: {
-                                labels: ['Отличники', 'Хорошисты', 'Троечники', 'Неуспевающие'],
+                                labels: ['Неуспевающие', 'Отличники', 'Хорошисты', 'Троечники'],
                                 datasets: [{
-                                    data: data_percent,
+                                    data: data_chart,
                                     backgroundColor: ['#e91e63', '#00e676', '#ff5722', '#1e88e5'],
                                     borderWidth: 0.5 ,
                                     borderColor: '#ddd'
