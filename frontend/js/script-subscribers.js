@@ -1,13 +1,19 @@
  var btn=document.querySelector('#enter-btn');
-             
+ var canvas=document.getElementById('bar-chart-student');
+ var ctx = canvas.getContext('2d');
+window.myChart1 = new Chart(ctx, {});
+
+canvas=document.getElementById('sector-chart-categories');
+ctx = canvas.getContext('2d');
+window.myChart2 = new Chart(ctx, {});
+
     btn.addEventListener('click', event=>{
+        window.myChart1.destroy();
+        window.myChart2.destroy();
+        document.getElementById("result-error").innerHTML = ' ';
+
        var url = '/students/' + document.getElementById('groupID-input').value;
-         var canvas=document.getElementById('bar-chart-student');
-        var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height); 
-        canvas=document.getElementById('sector-chart-categories');
-        ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
         
        fetch(url, {
             method: 'GET'
@@ -26,7 +32,7 @@
                 let error = new Error(data.status);
                 throw error;
             } else {
-                if (data.statistics.length==0){
+                if (Object.keys(data.statistics).length==0){
                     let error = new Error("Empty data");
                     throw error;
                 }
@@ -44,15 +50,17 @@
                         for(var i in data.statistics) {
                                 data_percent.push(data.statistics[i]/sum);
                             }
+                    if (sum==0){
+                    let error = new Error("No subscribers");
+                    throw error;
+                }else{
 
 
                 // Vertical bar chart
                 var canvas=document.getElementById('bar-chart-student');
                 var ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height); 
-                document.getElementById("result-error").innerHTML = ' ';
 
-                    var myChart = new Chart(ctx, {
+                    window.myChart1 = new Chart(ctx, {
                     type: 'bar',
                     data: {
                         labels: ['Неуспевающие', 'Отличники', 'Хорошисты', 'Троечники' ],
@@ -104,7 +112,7 @@
                     var canvas=document.getElementById('sector-chart-categories');
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        var myChart = new Chart(ctx, {
+                        window.myChart2 = new Chart(ctx, {
                             type: 'pie',
                             data: {
                                 labels: ['Неуспевающие', 'Отличники', 'Хорошисты', 'Троечники'],
@@ -154,6 +162,7 @@
 
 
                         }
+                }
                     }
                 
            
