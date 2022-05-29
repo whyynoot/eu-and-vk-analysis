@@ -3,6 +3,11 @@
     var url;
 
     choiceBtn.addEventListener('click', event=> {
+         var canvas=document.getElementById('bar-chart-categories');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);         
+                    document.getElementById("result-error-stud").innerHTML = ' ';
+        
         if ((event.target.name==='bad')||(event.target.name==='three')||(event.target.name==='good')||(event.target.name==='excellent')){
             switch (event.target.name){
                 case 'excellent':
@@ -34,7 +39,7 @@
                 let error = new Error(data.status);
                 throw error;
             } else {
-                if (data.statistics.length==0){
+                if (Object.keys(data.statistics).length==1){
                     let error = new Error("Empty data");
                     throw error;
                 }
@@ -69,8 +74,7 @@
                     var canvas=document.getElementById('bar-chart-categories');
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);         
-                    document.getElementById("result-error").innerHTML = ' ';
-
+                    document.getElementById("result-error-stud").innerHTML = ' ';
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
