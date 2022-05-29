@@ -30,7 +30,15 @@
             })
             .then(resp => resp.json())
             .then(function(data) {
-                if (data.status=="OK"){
+                if (data.status!="OK"){
+                let error = new Error(data.status);
+                throw error;
+            } else {
+                if (data.statistics.length==0){
+                    let error = new Error("Empty data");
+                    throw error;
+                }
+                else {
                     var labels = [];
                     var data_chart = [];
                     var data_pie_chart;
@@ -58,7 +66,11 @@
                     
 
                     // Vertical bar chart
-                    var ctx = document.getElementById('bar-chart-categories').getContext('2d');
+                    var canvas=document.getElementById('bar-chart-categories');
+                    var ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);         
+                    document.getElementById("result-error").innerHTML = ' ';
+
                     var myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -84,7 +96,8 @@
                             scales: {
                                 yAxes: [{
                                     ticks: {
-                                        min: 0
+                                        min: 0,
+                                        precision:0
                                     }
                                 }]
                             }
@@ -142,6 +155,7 @@
                 });*/
          
                     }
+            }
                     
             }).catch(function(error) {
                 console.log(error);
