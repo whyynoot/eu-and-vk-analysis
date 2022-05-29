@@ -1,12 +1,15 @@
 
     var choiceBtn=document.querySelector('#choice-stud');
     var url;
+    var canvas=document.getElementById('bar-chart-categories');
+    var ctx = canvas.getContext('2d');
+    window.myChart = new Chart(ctx, {});
 
     choiceBtn.addEventListener('click', event=> {
-         var canvas=document.getElementById('bar-chart-categories');
-                    var ctx = canvas.getContext('2d');
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);         
-                    document.getElementById("result-error-stud").innerHTML = ' ';
+        
+        window.myChart.destroy();
+        
+        document.getElementById("result-error-stud").innerHTML = ' ';
         
         if ((event.target.name==='bad')||(event.target.name==='three')||(event.target.name==='good')||(event.target.name==='excellent')){
             switch (event.target.name){
@@ -75,7 +78,7 @@
                     var ctx = canvas.getContext('2d');
                     ctx.clearRect(0, 0, canvas.width, canvas.height);         
                     document.getElementById("result-error-stud").innerHTML = ' ';
-                    var myChart = new Chart(ctx, {
+                    window.myChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
                             labels: labels,
