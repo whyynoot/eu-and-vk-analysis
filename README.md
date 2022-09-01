@@ -1,12 +1,15 @@
 # Аналитика над данными Электронного Университета и ВКОНТАКТЕ
- 
+
+# Presentation
+https://euandvkanalysis.herokuapp.com/
+
 Тема
 ---
 Аналитика над данными ЭУ и ВКонтакте
  
 Состав команды: 
 ---
-* Алексеев Леонид СГН3-41Б - Backend
+* Алексеев Леонид СГН3-41Б - Backend & Scrapping
 * Костина Маргарита СГН3-41Б - FrontEnd
 * Смолина Евгения СГН3-41Б - Analysis
  
@@ -39,7 +42,7 @@
 * Parsing - Python
 * Rest API - Golang
 * Front End - HTML/CSS/JavaScript
-* Data Storage - MySQL
+* Data Storage - Postgresql 
  
 Тип результата
 ---
@@ -52,5 +55,6 @@
 * [ВКонтакте](https://vk.com/)
 * [Python](https://python-docx.readthedocs.io/en/latest/)
 * [Golang](https://go.dev/doc/)
-* [MySQL](https://dev.mysql.com/doc/)
+* [Postgresql](https://www.postgresql.org/docs/)
 * [Figma](https://www.figma.com/)
+* [Heroku](https://www.heroku.com/)

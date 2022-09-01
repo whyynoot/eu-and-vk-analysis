@@ -42,19 +42,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/clientModels.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.BadResponse"
+                            "$ref": "#/definitions/clientModels.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.BadResponse"
+                            "$ref": "#/definitions/clientModels.BadResponse"
                         }
                     }
                 }
@@ -80,19 +80,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/client_models.Response"
+                            "$ref": "#/definitions/clientModels.Response"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/client_models.BadResponse"
+                            "$ref": "#/definitions/clientModels.BadResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/client_models.BadResponse"
+                            "$ref": "#/definitions/clientModels.BadResponse"
                         }
                     }
                 }
@@ -100,7 +100,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "client_models.BadResponse": {
+        "clientModels.BadResponse": {
             "type": "object",
             "properties": {
                 "status": {
@@ -109,7 +109,7 @@ const docTemplate = `{
                 }
             }
         },
-        "client_models.Response": {
+        "clientModels.Response": {
             "type": "object",
             "properties": {
                 "statistics": {

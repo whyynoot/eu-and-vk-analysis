@@ -89,7 +89,7 @@ class EUParser:
             self.login()
         print("Start parsing...")
         try:
-            response = self.session.get('https://eu.bmstu.ru/modules/session/?session_id=32', proxies=self.proxy)
+            response = self.session.get('https://eu.bmstu.ru/modules/session/', proxies=self.proxy)
             response.encoding = 'utf-8'
         except Exception as e:
             raise Exception("Unable to parse groups", e)

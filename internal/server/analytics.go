@@ -1,7 +1,7 @@
 package backend
 
 import (
-	"eu-and-vk-analysis/backend/client_models"
+	"eu-and-vk-analysis/internal/clientModels"
 	"github.com/pkg/errors"
 	"log"
 )
@@ -32,16 +32,16 @@ func NewAnalytics() (*Analytics, error) {
 	}, nil
 }
 
-func (Analytics *Analytics) CloseDB() {
-	Analytics.DataBaseManager.CloseDB()
+func (analytics *Analytics) CloseDB() {
+	analytics.DataBaseManager.CloseDB()
 }
 
-func (Analytics *Analytics) AnalyseInterests(filter int) client_models.Response {
+func (analytics *Analytics) AnalyseInterests(filter int) clientModels.Response {
 	Interests := map[string]int{"total_students": 0}
-	students, err := Analytics.DataBaseManager.GetStudentsWithPerformance(filter)
+	students, err := analytics.DataBaseManager.GetStudentsWithPerformance(filter)
 	if err != nil {
 		log.Println(err)
-		return client_models.Response{Status: "NOT OK"}
+		return clientModels.Response{Status: "NOT OK"}
 	}
 
 	for _, student := range students {
@@ -61,19 +61,19 @@ func (Analytics *Analytics) AnalyseInterests(filter int) client_models.Response 
 		}
 	}
 
-	return client_models.Response{
+	return clientModels.Response{
 		Statistics: Interests,
 		Status:     "OK",
 	}
 }
 
-func (Analytics *Analytics) AnalyseStudents(GroupID int) client_models.Response {
+func (analytics *Analytics) AnalyseStudents(GroupID int) clientModels.Response {
 	Performance := map[string]int{"NA": 0, "three": 0, "good": 0, "excellent": 0}
 
-	Students, err := Analytics.DataBaseManager.GetStudentsPerformanceByGroup(GroupID)
+	Students, err := analytics.DataBaseManager.GetStudentsPerformanceByGroup(GroupID)
 	if err != nil {
 		log.Println(err)
-		return client_models.Response{Status: "NOT OK"}
+		return clientModels.Response{Status: "NOT OK"}
 	}
 
 	for _, student := range Students {
@@ -106,11 +106,11 @@ func (Analytics *Analytics) AnalyseStudents(GroupID int) client_models.Response 
 		}
 	}
 
-	return client_models.Response{Status: "OK", Statistics: Performance}
+	return clientModels.Response{Status: "OK", Statistics: Performance}
 }
 
-func (Analytics *Analytics) CheckCorrectPerformance(InputPerformance string) (int, error) {
-	status, ok := Analytics.performance[InputPerformance]
+func (analytics *Analytics) CheckCorrectPerformance(InputPerformance string) (int, error) {
+	status, ok := analytics.performance[InputPerformance]
 	if !ok {
 		return -1, errors.Errorf("%s Filter Not Supported", InputPerformance)
 	}

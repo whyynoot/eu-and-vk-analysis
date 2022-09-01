@@ -2,9 +2,9 @@ package app
 
 import (
 	"encoding/json"
-	"eu-and-vk-analysis/backend/client_models"
-	"eu-and-vk-analysis/backend/server"
-	_ "eu-and-vk-analysis/docs"
+	_ "eu-and-vk-analysis/docs" // working with Swagger documentation
+	"eu-and-vk-analysis/internal/clientModels"
+	"eu-and-vk-analysis/internal/server"
 	"github.com/gorilla/mux"
 	"github.com/kelseyhightower/envconfig"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -39,10 +39,10 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	w.WriteHeader(code)
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "Content-Type,access-control-allow-origin, access-control-allow-headers")
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.WriteHeader(code)
 	w.Write(js)
 }
 
@@ -51,14 +51,14 @@ func renderJSON(w http.ResponseWriter, v interface{}, code int) {
 // @Description Get interests by performance
 // @Tags Interests
 // @Param filter path string true "Filter" Enums(bad, good, excellent, three)
-// @Success 200 {object} client_models.Response
-// @Failure 400,500 {object} client_models.BadResponse
+// @Success 200 {object} clientModels.Response
+// @Failure 400,500 {object} clientModels.BadResponse
 // @Router /interests/{filter} [get]
 func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Request) {
 	InputPerformance := mux.Vars(req)["filter"]
 	status, err := ts.analytics.CheckCorrectPerformance(InputPerformance)
 	if err != nil {
-		renderJSON(w, client_models.BadResponse{
+		renderJSON(w, clientModels.BadResponse{
 			Status: err.Error(),
 		}, http.StatusBadRequest)
 		return
@@ -66,7 +66,7 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 
 	response := ts.analytics.AnalyseInterests(status)
 	if response.Status != "OK" {
-		renderJSON(w, client_models.BadResponse{Status: response.Status}, http.StatusInternalServerError)
+		renderJSON(w, clientModels.BadResponse{Status: response.Status}, http.StatusInternalServerError)
 	} else {
 		renderJSON(w, response, http.StatusOK)
 	}
@@ -78,29 +78,29 @@ func (ts *AnalyticsServer) interestsHandler(w http.ResponseWriter, req *http.Req
 // @Description Currently only supporting vk group id
 // @Tags Students
 // @Param filter path string true "Filter"
-// @Success 200 {object} client_models.Response
-// @Failure 400,500 {object} client_models.BadResponse
+// @Success 200 {object} clientModels.Response
+// @Failure 400,500 {object} clientModels.BadResponse
 // @Router /students/{filter} [get]
 func (ts *AnalyticsServer) studentsHandler(w http.ResponseWriter, req *http.Request) {
-	InputGroupId := mux.Vars(req)["filter"]
-	GroupId, err := strconv.Atoi(InputGroupId)
+	InputGroupID := mux.Vars(req)["filter"]
+	GroupID, err := strconv.Atoi(InputGroupID)
 	if err != nil {
 		log.Println(err)
-		renderJSON(w, client_models.BadResponse{
+		renderJSON(w, clientModels.BadResponse{
 			Status: "Filter Not Supported",
 		}, http.StatusBadRequest)
 		return
 	}
 
-	response := ts.analytics.AnalyseStudents(GroupId)
+	response := ts.analytics.AnalyseStudents(GroupID)
 	if response.Status != "OK" {
-		renderJSON(w, client_models.BadResponse{Status: response.Status}, http.StatusInternalServerError)
+		renderJSON(w, clientModels.BadResponse{Status: response.Status}, http.StatusInternalServerError)
 	} else {
 		renderJSON(w, response, http.StatusOK)
 	}
 }
 
-// App for running, initing server and router
+// App for running, initializing server and router
 
 type App struct {
 	router         *mux.Router
@@ -114,7 +114,7 @@ type ServerConfig struct {
 
 func NewApp() *App {
 	// Initializing logger, and setting it up
-	//file, err := os.OpenFile("logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	// file, err := os.OpenFile("logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	//if err != nil {
 	//	log.Fatalf("Error setting logs output file %v", err)
 	//}
@@ -136,11 +136,12 @@ func NewApp() *App {
 		log.Fatalf("Fatal error on initsiliazing analytics server %v", err)
 	}
 
-	//Router handling some functions
+	// Router handling some functions
 	app.router.HandleFunc("/interests/{filter}", app.analyticsSever.interestsHandler).Methods("GET")
 	app.router.HandleFunc("/students/{filter}", app.analyticsSever.studentsHandler).Methods("GET")
 
 	app.router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+
 	app.router.PathPrefix("/js/").Handler(http.FileServer(http.Dir("./frontend/")))
 	app.router.PathPrefix("/css/").Handler(http.FileServer(http.Dir("./frontend/")))
 	app.router.PathPrefix("/").Handler(http.FileServer(http.Dir("./frontend/html/")))
@@ -156,7 +157,7 @@ func NewApp() *App {
 func (app *App) Run() {
 	defer app.analyticsSever.closeDB()
 	log.Println("Staring server")
-	log.Fatal(app.server.ListenAndServe())
+	log.Panic(app.server.ListenAndServe())
 }
 
 func (app *App) NewServer(port string) {

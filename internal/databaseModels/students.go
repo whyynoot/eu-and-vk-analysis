@@ -1,4 +1,4 @@
-package database_models
+package databaseModels
 
 //go:generate reform
 

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"eu-and-vk-analysis/backend"
+	"eu-and-vk-analysis/internal/app"
 )
 
 // @title EU and VK Analytics API documentation

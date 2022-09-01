@@ -2,8 +2,8 @@ package backend
 
 import (
 	"database/sql"
-	"eu-and-vk-analysis/backend/database_models"
-	"eu-and-vk-analysis/backend/models"
+	"eu-and-vk-analysis/internal/databaseModels"
+	"eu-and-vk-analysis/internal/models"
 	"fmt"
 	"github.com/kelseyhightower/envconfig"
 	//_ "github.com/go-sql-driver/mysql"
@@ -18,13 +18,13 @@ import (
 // TODO: Release database work
 
 type DataBaseManager struct {
-	DbUrl         string
+	DbURL         string
 	sqlConnection *sql.DB
 	reform        *reform.DB
 }
 
 type DataBaseConfig struct {
-	DbUrl string `envconfig:"DATABASE_URL"`
+	DbURL string `envconfig:"DATABASE_URL" env-required:"true"`
 }
 
 func NewDataBaseManager() (*DataBaseManager, error) {
@@ -33,12 +33,12 @@ func NewDataBaseManager() (*DataBaseManager, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &DataBaseManager{DbUrl: cfg.DbUrl}, nil
+	return &DataBaseManager{DbURL: cfg.DbURL}, nil
 }
 
 func (db *DataBaseManager) Connect() error {
 	var err error
-	db.sqlConnection, err = sql.Open("postgres", db.DbUrl)
+	db.sqlConnection, err = sql.Open("postgres", db.DbURL)
 	if err != nil {
 		return err
 	}
@@ -81,7 +81,7 @@ func (db *DataBaseManager) GetStudentsWithPerformance(performance int) ([]models
 	}
 
 	for i := range Students {
-		Groups, err := db.GetStudentGroupsById(Students[i].Id)
+		Groups, err := db.GetStudentGroupsByID(Students[i].ID)
 		if err != nil {
 			return nil, err
 		}
@@ -90,7 +90,7 @@ func (db *DataBaseManager) GetStudentsWithPerformance(performance int) ([]models
 	return Students, nil
 }
 
-func (db *DataBaseManager) GetStudentGroupsById(id int32) ([]models.VKGroup, error) {
+func (db *DataBaseManager) GetStudentGroupsByID(id int32) ([]models.VKGroup, error) {
 	q := "SELECT g.id, g.category FROM vkgroups g INNER JOIN groupsstudents on groupsstudents.group_id = g.id where groupsstudents.student_id = $1"
 
 	GroupsRows, err := db.sqlConnection.Query(q, id)
@@ -103,7 +103,7 @@ func (db *DataBaseManager) GetStudentGroupsById(id int32) ([]models.VKGroup, err
 
 	for GroupsRows.Next() {
 		var Group models.VKGroup
-		if err := GroupsRows.Scan(&Group.Id, &Group.Theme); err != nil {
+		if err := GroupsRows.Scan(&Group.ID, &Group.Theme); err != nil {
 			return nil, err
 		}
 		Groups = append(Groups, Group)
@@ -113,12 +113,12 @@ func (db *DataBaseManager) GetStudentGroupsById(id int32) ([]models.VKGroup, err
 }
 
 // private method
-func (db *DataBaseManager) getStudentMarksByQuery(ExtraQuery string, args ...interface{}) ([]models.Student, error) {
+func (db *DataBaseManager) getStudentMarksByQuery(extraQuery string, args ...interface{}) ([]models.Student, error) {
 	var Students []models.Student
 
 	q := `SELECT s.id,
     m.credit_1, m.credit_2, m.credit_3, m.credit_4, m.credit_5, m.credit_6, m.credit_7, m.credit_8, m.credit_9, m.credit_10,
-    m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8 FROM students s INNER JOIN marks m ON s.id = m.student_id` + ExtraQuery
+    m.exam_1, m.exam_2, m.exam_3, m.exam_4, m.exam_5, m.exam_6, m.exam_7, m.exam_8 FROM students s INNER JOIN marks m ON s.id = m.student_id` + extraQuery
 
 	StudentMarksRows, err := db.sqlConnection.Query(q, args...)
 	if err != nil {
@@ -127,10 +127,10 @@ func (db *DataBaseManager) getStudentMarksByQuery(ExtraQuery string, args ...int
 	defer StudentMarksRows.Close()
 
 	for StudentMarksRows.Next() {
-		var marks database_models.Marks
+		var marks databaseModels.Marks
 		var student models.Student
 
-		if err := StudentMarksRows.Scan(&student.Id, &marks.Credit1, &marks.Credit2, &marks.Credit3, &marks.Credit4, &marks.Credit5,
+		if err := StudentMarksRows.Scan(&student.ID, &marks.Credit1, &marks.Credit2, &marks.Credit3, &marks.Credit4, &marks.Credit5,
 			&marks.Credit6, &marks.Credit7, &marks.Credit8, &marks.Credit9, &marks.Credit10, &marks.Exam1, &marks.Exam2, &marks.Exam3,
 			&marks.Exam4, &marks.Exam5, &marks.Exam6, &marks.Exam7, &marks.Exam8); err != nil {
 			return nil, err

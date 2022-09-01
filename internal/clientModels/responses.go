@@ -1,4 +1,4 @@
-package client_models
+package clientModels
 
 type Response struct {
 	Statistics map[string]int `json:"statistics"`
@@ -6,5 +6,5 @@ type Response struct {
 }
 
 type BadResponse struct {
-	Status     string         `json:"status" example:"NOT OK"`
+	Status string `json:"status" example:"NOT OK"`
 }
