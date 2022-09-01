@@ -3,6 +3,9 @@
 # Presentation
 https://euandvkanalysis.herokuapp.com/
 
+Open API Documentation:
+https://euandvkanalysis.herokuapp.com/swagger/index.html
+
 Тема
 ---
 Аналитика над данными ЭУ и ВКонтакте
